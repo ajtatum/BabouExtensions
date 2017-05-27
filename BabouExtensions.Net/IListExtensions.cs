@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace BabouExtensions
+namespace BabouExtensions.Net
 {
     public static class IListExtensions
     {

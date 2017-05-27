@@ -5,52 +5,65 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace BabouExtensions
+namespace BabouExtensions.Core
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Attempts to convert a string into proper title case.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static string ToTitleCase(this string source)
         {
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(source.ToLower());
+            var tokens = source.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            for (var i = 0; i < tokens.Length; i++)
+            {
+                var token = tokens[i];
+                tokens[i] = token.Substring(0, 1).ToUpper() + token.Substring(1).ToLower();
+            }
+
+            return string.Join(" ", tokens);
         }
 
-        public static string UppercaseFirstLetter(this string value)
+        /// <summary>
+        /// Uppercases the first leter of a string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string UppercaseFirstLetter(this string source)
         {
             // Uppercase the first letter in the string.
-            if (value.Length <= 0) return value;
+            if (source.Length <= 0) return source;
 
-            var array = value.ToCharArray();
+            var array = source.ToCharArray();
             array[0] = char.ToUpper(array[0]);
             return new string(array);
         }
 
-        public static T GetEnumValueFromDescription<T>(this string description)
-        {
-            var type = typeof(T);
-            if (!type.IsEnum)
-                throw new ArgumentException();
-            var fields = type.GetFields();
-            var field = fields.SelectMany(f => f.GetCustomAttributes(typeof(DescriptionAttribute), false), (f, a) => new { Field = f, Att = a })
-                .SingleOrDefault(a => ((DescriptionAttribute)a.Att).Description == description);
-            return (T) field?.Field.GetRawConstantValue();
-        }
-
         /// <summary>
-        /// Get a substring of the first N characters.
+        /// Truncates your string and optionally adds an ellipses suffix
         /// </summary>
+        /// <param name="source">Original string</param>
+        /// <param name="length">How long should the string be?</param>
+        /// <param name="showSuffix">Do you want to show ellipses?</param>
+        /// <returns></returns>
         public static string Truncate(this string source, int length, bool showSuffix)
         {
+            var truncatedString = string.Empty;
+
             if (!string.IsNullOrEmpty(source) && source.Length >= length)
             {
                 const string suffix = "...";
 
-                source = source.Substring(0, length);
+                truncatedString = source.Substring(0, length);
+
                 if (showSuffix)
                 {
-                    source += suffix;
+                    truncatedString = $"{source}{suffix}";
                 }
             }
-            return source;
+            return truncatedString;
         }
 
         public static string ToStringOrDefault<T>(this T? nullable, string defaultValue) where T : struct
@@ -168,6 +181,7 @@ namespace BabouExtensions
         /// <summary>
         /// Produces optional, URL-friendly version of a title, "like-this-one".
         /// </summary>
+        /// <param name="title">String to make URL Friendly</param>
         public static string URLFriendly(this string title)
         {
             if (title == null) return "";
@@ -202,7 +216,7 @@ namespace BabouExtensions
                 }
                 else if ((int)c >= 128)
                 {
-                    int prevlen = sb.Length;
+                    var prevlen = sb.Length;
                     sb.Append(RemapInternationalCharToAscii(c));
                     if (prevlen != sb.Length) prevdash = false;
                 }
@@ -292,11 +306,7 @@ namespace BabouExtensions
 
         public static bool IsValidUrl(this string urlString)
         {
-            return Uri.TryCreate(urlString, UriKind.Absolute, out Uri uri)
-                && (uri.Scheme == Uri.UriSchemeHttp
-                || uri.Scheme == Uri.UriSchemeHttps
-                || uri.Scheme == Uri.UriSchemeFtp
-                || uri.Scheme == Uri.UriSchemeMailto);
+            return Uri.TryCreate(urlString, UriKind.Absolute, out Uri uri);
         }
     }
 }

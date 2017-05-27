@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace BabouExtensions
+namespace BabouExtensions.Net
 {
     public static class DataExtensions
     {
@@ -17,7 +17,7 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Converts the passed in data table to a CSV-style string.      
+        /// Converts the passed in data table to a CSV-style string.
         /// </summary>
         /// <param name="table">Table to convert</param>
         /// <returns>Resulting CSV-style string</returns>
@@ -67,7 +67,9 @@ namespace BabouExtensions
                 foreach (var item in row.ItemArray)
                 {
                     if (item is DBNull)
+                    {
                         result.Append(delimiter);
+                    }
                     else
                     {
                         var itemAsString = item.ToString();
@@ -108,7 +110,7 @@ namespace BabouExtensions
         {
             var properties = GetPropertiesForType<T>();
 
-            return (from object row in table.Rows select CreateItemFromRow<T>((DataRow) row, properties)).ToList();
+            return (from object row in table.Rows select CreateItemFromRow<T>((DataRow)row, properties)).ToList();
         }
 
         private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
@@ -121,7 +123,7 @@ namespace BabouExtensions
             return item;
         }
 
-        #endregion
+        #endregion DataTable to List Methods
 
         #region DataTable to Html Table Methods
 
@@ -153,7 +155,7 @@ namespace BabouExtensions
         {
             if (targetTable == null)
             {
-                throw new ArgumentNullException("targetTable");
+                throw new ArgumentNullException(nameof(targetTable));
             }
 
             if (targetTable.Columns.Count != options.HeaderStyles.Count)
@@ -217,6 +219,6 @@ namespace BabouExtensions
             return htmlString;
         }
 
-        #endregion
+        #endregion DataTable to Html Table Methods
     }
 }

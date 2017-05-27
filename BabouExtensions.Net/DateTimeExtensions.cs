@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BabouExtensions
+namespace BabouExtensions.Net
 {
     public static class DateTimeExtensions
     {

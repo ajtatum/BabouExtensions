@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace BabouExtensions
+namespace BabouExtensions.Core
 {
     public static class LinqExtensions
     {
@@ -53,7 +51,7 @@ namespace BabouExtensions
         {
             foreach (var item in list)
             {
-                function(item);
+                function?.Invoke(item);
             }
         }
 
@@ -61,7 +59,7 @@ namespace BabouExtensions
         {
             foreach (var item in list)
             {
-                function(item);
+                function?.Invoke(item);
             }
         }
 
@@ -154,7 +152,7 @@ namespace BabouExtensions
         {
             var result = new StringBuilder();
 
-            foreach (var item in self) result.Append(function(item));
+            foreach (var item in self) result.Append(function?.Invoke(item));
 
             return result.ToString();
         }
@@ -172,44 +170,7 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Takes a list of items and attempts to put them into a datatable
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        public static DataTable ToDataTable<T>(this IEnumerable<T> items)
-        {
-            // Create the result table, and gather all properties of a T        
-            var table = new DataTable(typeof(T).Name);
-            var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            // Add the properties as columns to the datatable
-            foreach (var prop in props)
-            {
-                var propType = prop.PropertyType;
-
-                // Is it a nullable type? Get the underlying type 
-                if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    propType = new NullableConverter(propType).UnderlyingType;
-
-                table.Columns.Add(prop.Name, propType);
-            }
-
-            // Add the property values per T as rows to the datatable
-            foreach (var item in items)
-            {
-                var values = new object[props.Length];
-                for (var i = 0; i < props.Length; i++)
-                    values[i] = props[i].GetValue(item, null);
-
-                table.Rows.Add(values);
-            }
-
-            return table;
-        }
-
-        /// <summary>
-        /// When a query of type "match any of the given strings against one column" is to be performed, the following extension method can be used. 
+        /// When a query of type "match any of the given strings against one column" is to be performed, the following extension method can be used.
         /// Beware that the logic is slightly different here: When no strings are given, there is no filtering performed.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -228,9 +189,9 @@ namespace BabouExtensions
         public static IQueryable<T> MultiValueContainsAny<T>(this IQueryable<T> source, ICollection<string> searchKeys, Expression<Func<T, string>> fieldSelector)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (fieldSelector == null)
-                throw new ArgumentNullException("fieldSelector");
+                throw new ArgumentNullException(nameof(fieldSelector));
             if (searchKeys == null || searchKeys.Count == 0)
                 return source;
 
@@ -248,10 +209,9 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// When a query like "Find me all Persons that have Jonny or Jackie as their first, last or nick name" is to be performed, 
+        /// When a query like "Find me all Persons that have Jonny or Jackie as their first, last or nick name" is to be performed,
         /// the following extension method can be used. Please note that performing such a query can easily become a performance hog; use it's power wisely!
         /// </summary>
-        /// <see cref="http://blogs.telerik.com/blogs/posts/12-04-17/string-matching-in-linq.aspx"/>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <param name="searchKeys"></param>
@@ -269,18 +229,18 @@ namespace BabouExtensions
         public static IQueryable<T> MultiValueContainsAnyAll<T>(this IQueryable<T> source, ICollection<string> searchKeys, bool all, Expression<Func<T, string[]>> fieldSelectors)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             if (fieldSelectors == null)
-                throw new ArgumentNullException("fieldSelectors");
-            NewArrayExpression newArray = fieldSelectors.Body as NewArrayExpression;
+                throw new ArgumentNullException(nameof(fieldSelectors));
+            var newArray = fieldSelectors.Body as NewArrayExpression;
             if (newArray == null)
-                throw new ArgumentOutOfRangeException("fieldSelectors", fieldSelectors, "You need to use fieldSelectors similar to 'x => new string [] { x.LastName, x.FirstName, x.NickName }'; other forms not handled.");
+                throw new ArgumentOutOfRangeException(nameof(fieldSelectors), fieldSelectors, "You need to use fieldSelectors similar to 'x => new string [] { x.LastName, x.FirstName, x.NickName }'; other forms not handled.");
             if (newArray.Expressions.Count == 0)
                 throw new ArgumentException("No field selected.");
             if (searchKeys == null || searchKeys.Count == 0)
                 return source;
 
-            MethodInfo containsMethod = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
+            var containsMethod = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
             Expression expression = null;
 
             foreach (var searchKeyPart in searchKeys)

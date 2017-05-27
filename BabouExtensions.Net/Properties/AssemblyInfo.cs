@@ -1,16 +1,15 @@
-﻿using System.Resources;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BabouExtensions")]
-[assembly: AssemblyDescription("Another Extension Methods package but named after Babou from Archer")]
+[assembly: AssemblyTitle("BabouExtensions.Net")]
+[assembly: AssemblyDescription("Babou is desperate for stuff to play with, so I created an Extension Methods package for him. Babou is from the TV show Archer and is not affiliated with this package.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("AJ Tatum")]
-[assembly: AssemblyProduct("BabouExtensions")]
+[assembly: AssemblyProduct("BabouExtensions.Net")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,4 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: NeutralResourcesLanguage("en-US")]
-
