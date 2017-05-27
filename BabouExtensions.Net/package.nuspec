@@ -10,9 +10,9 @@
     <!--*-->
     <authors>$author$</authors>
     <owners>$author$</owners>
+    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
     <!--
     <licenseUrl></licenseUrl>
-    <projectUrl></projectUrl>
     <iconUrl></iconUrl>
 -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
