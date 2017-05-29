@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Babou Extensions for the .NET Framework</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary>$description$</summary>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <language>en-US</language>
+    <tags>extension-methods extensions extension</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>

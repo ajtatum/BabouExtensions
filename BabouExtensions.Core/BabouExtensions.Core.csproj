@@ -16,4 +16,8 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.283" />
+  </ItemGroup>
+
 </Project>

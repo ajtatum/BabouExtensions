@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+  },
+  "frameworks": {
+    "netcoreapp1.1": {}
+  },
+  "runtimes": {
+    "win": {}
+  }
+}

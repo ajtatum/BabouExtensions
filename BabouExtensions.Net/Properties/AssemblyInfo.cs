@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BabouExtensions.Net")]
+[assembly: AssemblyTitle("Babou Extensions for the .NET Framework")]
 [assembly: AssemblyDescription("Babou is desperate for stuff to play with, so I created an Extension Methods package for him. Babou is from the TV show Archer and is not affiliated with this package.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("AJ Tatum")]
