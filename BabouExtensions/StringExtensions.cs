@@ -5,25 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace BabouExtensions.Core
+namespace BabouExtensions
 {
     public static class StringExtensions
     {
         /// <summary>
-        /// Attempts to convert a string into proper title case.
+        /// Converts a string into proper title case.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
         public static string ToTitleCase(this string source)
         {
-            var tokens = source.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            for (var i = 0; i < tokens.Length; i++)
-            {
-                var token = tokens[i];
-                tokens[i] = token.Substring(0, 1).ToUpper() + token.Substring(1).ToLower();
-            }
-
-            return string.Join(" ", tokens);
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(source.ToLower());
         }
 
         /// <summary>
@@ -39,6 +32,24 @@ namespace BabouExtensions.Core
             var array = source.ToCharArray();
             array[0] = char.ToUpper(array[0]);
             return new string(array);
+        }
+
+        /// <summary>
+        /// Gets the description of an enum value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static T GetEnumValueFromDescription<T>(this string source)
+        {
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new ArgumentException();
+            var fields = type.GetFields();
+            var field = fields.SelectMany(f => f.GetCustomAttributes(typeof(DescriptionAttribute), false),
+                    (f, a) => new {Field = f, Att = a})
+                .SingleOrDefault(a => ((DescriptionAttribute) a.Att).Description == source);
+            return (T) field?.Field.GetRawConstantValue();
         }
 
         /// <summary>
@@ -71,7 +82,8 @@ namespace BabouExtensions.Core
             return nullable?.ToString() ?? defaultValue;
         }
 
-        public static string ToStringOrDefault<T>(this T? nullable, string format, string defaultValue) where T : struct, IFormattable
+        public static string ToStringOrDefault<T>(this T? nullable, string format, string defaultValue)
+            where T : struct, IFormattable
         {
             return nullable?.ToString(format, CultureInfo.CurrentCulture) ?? defaultValue;
         }
@@ -79,70 +91,73 @@ namespace BabouExtensions.Core
         /// <summary>
         /// Goes through the string and addes a space between capital letters, excluding the first character.
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static string AddSpacesToSentence(this string text)
+        public static string AddSpacesToSentence(this string source)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(source))
                 return string.Empty;
 
-            var newText = new StringBuilder(text.Length * 2);
-            newText.Append(text[0]);
+            var newText = new StringBuilder(source.Length * 2);
+            newText.Append(source[0]);
 
-            for (var i = 1; i < text.Length; i++)
+            for (var i = 1; i < source.Length; i++)
             {
-                if (char.IsUpper(text[i]) && text[i - 1] != ' ')
+                if (char.IsUpper(source[i]) && source[i - 1] != ' ')
                     newText.Append(' ');
-                newText.Append(text[i]);
+                newText.Append(source[i]);
             }
             return newText.ToString();
         }
 
-        public static string CleanPhone(this string phone)
-        {
-            var digitsOnly = new Regex(@"[^\d]");
-            return digitsOnly.Replace(phone, "");
-        }
+        /// <summary>
+        /// Returns just the digits from a string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetTheDigits(this string source) => new Regex(@"[^\d]").Replace(source, string.Empty);
 
-        public static string StripSpacesAndNonAlphaNumeric(this string input)
-        {
-            var regex = new Regex(@"[^A-Za-z0-9]+");
-            return regex.Replace(input, string.Empty);
-        }
+        /// <summary>
+        /// Returns just alpha characters.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string StripSpacesAndNonAlphaNumeric(this string source) =>
+            new Regex(@"[^A-Za-z0-9]+").Replace(source, string.Empty);
 
-        public static string StripHtml(this string input)
-        {
-            var tagsExpression = new Regex(@"<[^>]*>");
-            return tagsExpression.Replace(input, " ");
-        }
+        /// <summary>
+        /// Removes HTML from a string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string StripHtml(this string source) => new Regex(@"<[^>]*>").Replace(source, " ");
 
-        public static string RemoveLineEndings(this string value)
+        public static string RemoveLineEndings(this string source)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(source))
             {
-                return value;
+                return source;
             }
-            var lineSeparator = ((char)0x2028).ToString();
-            var paragraphSeparator = ((char)0x2029).ToString();
+            var lineSeparator = ((char) 0x2028).ToString();
+            var paragraphSeparator = ((char) 0x2029).ToString();
 
-            return value.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace(lineSeparator, string.Empty).Replace(paragraphSeparator, string.Empty);
+            return source.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty)
+                .Replace(lineSeparator, string.Empty).Replace(paragraphSeparator, string.Empty);
         }
 
-        public static string RemoveTrailingSpaces(this string value)
-        {
-            return value.TrimStart().TrimEnd();
-        }
+        public static string RemoveTrailingSpaces(this string value) => value.TrimStart().TrimEnd();
 
-        public static string[] GetWords(this string input, int count = -1, string[] wordDelimiter = null, StringSplitOptions options = StringSplitOptions.None)
+        public static string[] GetWords(this string source, int count = -1, string[] wordDelimiter = null,
+            StringSplitOptions options = StringSplitOptions.None)
         {
-            if (string.IsNullOrEmpty(input)) return new string[] { };
+            if (string.IsNullOrEmpty(source)) return new string[] { };
 
             if (count < 0)
-                return input.Split(wordDelimiter, options);
+                return source.Split(wordDelimiter, options);
 
-            var words = input.Split(wordDelimiter, count + 1, options);
+            var words = source.Split(wordDelimiter, count + 1, options);
             if (words.Length <= count)
-                return words;   // not so many words found
+                return words; // not so many words found
 
             // remove last "word" since that contains the rest of the string
             Array.Resize(ref words, words.Length - 1);
@@ -153,13 +168,13 @@ namespace BabouExtensions.Core
         /// <summary>
         /// Removes special characters that are often generated by word.
         /// </summary>
-        /// <param name="wordText"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static string CleanWordFormatting(this string wordText)
+        public static string CleanWordFormatting(this string source)
         {
-            if (!string.IsNullOrEmpty(wordText))
+            if (!string.IsNullOrEmpty(source))
             {
-                return wordText.Replace('\u2013', '-')
+                return source.Replace('\u2013', '-')
                     .Replace('\u2013', '-')
                     .Replace('\u2014', '-')
                     .Replace('\u2015', '-')
@@ -175,25 +190,25 @@ namespace BabouExtensions.Core
                     .Replace('\u2032', '\'')
                     .Replace('\u2033', '\"');
             }
-            return wordText;
+            return source;
         }
 
         /// <summary>
         /// Produces optional, URL-friendly version of a title, "like-this-one".
         /// </summary>
-        /// <param name="title">String to make URL Friendly</param>
-        public static string URLFriendly(this string title)
+        /// <param name="source">String to make URL Friendly</param>
+        public static string UrlFriendly(this string source)
         {
-            if (title == null) return "";
+            if (source == null) return "";
 
             const int maxlen = 250;
-            var len = title.Length;
+            var len = source.Length;
             var prevdash = false;
             var sb = new StringBuilder(len);
 
             for (int i = 0; i < len; i++)
             {
-                var c = title[i];
+                var c = source[i];
                 if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
                 {
                     sb.Append(c);
@@ -202,7 +217,7 @@ namespace BabouExtensions.Core
                 else if (c >= 'A' && c <= 'Z')
                 {
                     // tricky way to convert to lowercase
-                    sb.Append((char)(c | 32));
+                    sb.Append((char) (c | 32));
                     prevdash = false;
                 }
                 else if (c == ' ' || c == ',' || c == '.' || c == '/' ||
@@ -214,7 +229,7 @@ namespace BabouExtensions.Core
                         prevdash = true;
                     }
                 }
-                else if ((int)c >= 128)
+                else if ((int) c >= 128)
                 {
                     var prevlen = sb.Length;
                     sb.Append(RemapInternationalCharToAscii(c));
@@ -304,9 +319,10 @@ namespace BabouExtensions.Core
             return "";
         }
 
-        public static bool IsValidUrl(this string urlString)
-        {
-            return Uri.TryCreate(urlString, UriKind.Absolute, out Uri uri);
-        }
+        public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out Uri uri)
+                                                             && (uri.Scheme == Uri.UriSchemeHttp
+                                                                 || uri.Scheme == Uri.UriSchemeHttps
+                                                                 || uri.Scheme == Uri.UriSchemeFtp
+                                                                 || uri.Scheme == Uri.UriSchemeMailto);
     }
 }

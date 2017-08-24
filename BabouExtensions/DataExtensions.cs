@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace BabouExtensions.Net
+namespace BabouExtensions
 {
     public static class DataExtensions
     {
@@ -130,7 +129,7 @@ namespace BabouExtensions.Net
         public class DataTableToHtmlOptions
         {
             public string TableStyle { get; set; }
-            public string TableID { get; set; }
+            public string TableId { get; set; }
             public string TableEvenRowBgHex { get; set; }
             public string TableOddRowBgHex { get; set; }
 
@@ -139,16 +138,6 @@ namespace BabouExtensions.Net
             public List<string> ItemFormats { get; set; }
             public bool TotalLastColumn { get; set; }
             public string TotalColumnName { get; set; }
-
-            public void TableEvenRowBg(Color clr)
-            {
-                TableEvenRowBgHex = ColorTranslator.ToHtml(clr);
-            }
-
-            public void TableOddRowBg(Color clr)
-            {
-                TableOddRowBgHex = ColorTranslator.ToHtml(clr);
-            }
         }
 
         public static string ToHtmlTable(this DataTable targetTable, DataTableToHtmlOptions options)

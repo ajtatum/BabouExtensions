@@ -1,19 +1,30 @@
 ﻿using System;
 
-namespace BabouExtensions.Net
+namespace BabouExtensions
 {
+    /// <summary>
+    /// Extensions for DateTime
+    /// </summary>
     public static class DateTimeExtensions
     {
-        public static string ToShortString(this DateTime input)
-        {
-            return input.ToString("yyyy-MM-dd");
-        }
 
-        public static bool Between(this DateTime dt, DateTime rangeBeg, DateTime rangeEnd)
+        /// <summary>
+        /// Determins if two dates are within a range.
+        /// </summary>
+        /// <param name="dt">The Current DateTime</param>
+        /// <param name="rangeBeg">Beginning DateTime Range</param>
+        /// <param name="rangeEnd">End of DateTime Range</param>
+        /// <returns></returns>
+        public static bool IsBetween(this DateTime dt, DateTime rangeBeg, DateTime rangeEnd)
         {
             return dt.Ticks >= rangeBeg.Ticks && dt.Ticks <= rangeEnd.Ticks;
         }
 
+        /// <summary>
+        /// Calculates age based on DateTime specified
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
         public static int CalculateAge(this DateTime dateTime)
         {
             var age = DateTime.Now.Year - dateTime.Year;
@@ -22,6 +33,11 @@ namespace BabouExtensions.Net
             return age;
         }
 
+        /// <summary>
+        /// Returns a friendly version of a DateTime, ie: one second/minute/hour ago etc.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string ToReadableTime(this DateTime value)
         {
             var ts = new TimeSpan(DateTime.UtcNow.Ticks - value.Ticks);
@@ -61,6 +77,16 @@ namespace BabouExtensions.Net
             }
             var years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
             return years <= 1 ? "one year ago" : years + " years ago";
+        }
+
+        /// <summary>
+        /// Returns the date as yyyy-MM-dd
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string ToShortString(this DateTime input)
+        {
+            return input.ToString("yyyy-MM-dd");
         }
     }
 }

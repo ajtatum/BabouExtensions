@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
+    <Authors>AJ Tatum</Authors>
+    <Company>AJ Tatum</Company>
+    <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
+    <PackageTags>extension-methods extensions extension</PackageTags>
+    <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
+    <NeutralLanguage>English (United States)</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NETStandard.Library" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace BabouExtensions.Core
+namespace BabouExtensions
 {
     public static class LinqExtensions
     {
-        public static Boolean IsEmpty<T>(this IEnumerable<T> source)
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
             //http://stackoverflow.com/a/41324/397186
             if (source == null)
@@ -170,6 +172,43 @@ namespace BabouExtensions.Core
         }
 
         /// <summary>
+        /// Takes a list of items and attempts to put them into a datatable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static DataTable ToDataTable<T>(this IEnumerable<T> items)
+        {
+            // Create the result table, and gather all properties of a T
+            var table = new DataTable(typeof(T).Name);
+            var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            // Add the properties as columns to the datatable
+            foreach (var prop in props)
+            {
+                var propType = prop.PropertyType;
+
+                // Is it a nullable type? Get the underlying type
+                if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    propType = new NullableConverter(propType).UnderlyingType;
+
+                table.Columns.Add(prop.Name, propType);
+            }
+
+            // Add the property values per T as rows to the datatable
+            foreach (var item in items)
+            {
+                var values = new object[props.Length];
+                for (var i = 0; i < props.Length; i++)
+                    values[i] = props[i].GetValue(item, null);
+
+                table.Rows.Add(values);
+            }
+
+            return table;
+        }
+
+        /// <summary>
         /// When a query of type "match any of the given strings against one column" is to be performed, the following extension method can be used.
         /// Beware that the logic is slightly different here: When no strings are given, there is no filtering performed.
         /// </summary>
@@ -293,4 +332,5 @@ namespace BabouExtensions.Core
             return list;
         }
     }
+
 }

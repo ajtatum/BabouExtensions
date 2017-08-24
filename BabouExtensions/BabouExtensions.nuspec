@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>BabouExtensions</id>
+    <version>1.0.0</version>
+    <title>Babou Extensions</title>
+    <authors>AJ Tatum</authors>
+    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
+    <description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</description>
+    <language>en-US</language>
+    <tags>extension-methods extensions extension</tags>
+  </metadata>
+</package>

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 
-namespace BabouExtensions.Net
+namespace BabouExtensions
 {
     public static class IdentityExtensions
     {

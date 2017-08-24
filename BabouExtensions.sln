@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabouExtensions.Core", "BabouExtensions.Core\BabouExtensions.Core.csproj", "{0764B353-DC49-4817-92F8-C834569042EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabouExtensions.Net", "BabouExtensions.Net\BabouExtensions.Net.csproj", "{6675312F-174E-4033-8FD2-CAE792FBBF51}"
-EndProject
-Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "NuGetPackage1", "NuGetPackage1\NuGetPackage1.nuproj", "{BB072533-D780-4C4D-8640-8FDB3F470E99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BabouExtensions", "BabouExtensions\BabouExtensions.csproj", "{17F10E3A-855B-4042-9087-B9F6F98EC6A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,20 +11,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0764B353-DC49-4817-92F8-C834569042EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0764B353-DC49-4817-92F8-C834569042EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0764B353-DC49-4817-92F8-C834569042EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0764B353-DC49-4817-92F8-C834569042EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6675312F-174E-4033-8FD2-CAE792FBBF51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6675312F-174E-4033-8FD2-CAE792FBBF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6675312F-174E-4033-8FD2-CAE792FBBF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6675312F-174E-4033-8FD2-CAE792FBBF51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB072533-D780-4C4D-8640-8FDB3F470E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB072533-D780-4C4D-8640-8FDB3F470E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB072533-D780-4C4D-8640-8FDB3F470E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB072533-D780-4C4D-8640-8FDB3F470E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F10E3A-855B-4042-9087-B9F6F98EC6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F10E3A-855B-4042-9087-B9F6F98EC6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F10E3A-855B-4042-9087-B9F6F98EC6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F10E3A-855B-4042-9087-B9F6F98EC6A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_BuildVersioningStyle = YearStamp.MonthStamp.DayStamp.Increment
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_StartDate = 2017/4/17
+		BuildVersion_ConfigurationName = Release
+		BuildVersion_AssemblyInfoFilename = BabouExtensions.Net\obj\Release\net462\BabouExtensions.Net.AssemblyInfo.cs
+		SolutionGuid = {9844B846-BF12-4E75-ADBE-EC9193A91A60}
 	EndGlobalSection
 EndGlobal

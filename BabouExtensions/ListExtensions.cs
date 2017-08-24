@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace BabouExtensions.Net
+namespace BabouExtensions
 {
-    public static class IListExtensions
+    /// <summary>
+    /// Extensions for Lists
+    /// </summary>
+    public static class ListExtensions
     {
         private static class ThreadSafeRandom
         {
