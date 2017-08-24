@@ -93,7 +93,8 @@ namespace BabouExtensions
 
         #region DataTable to List Methods
 
-        private static readonly Dictionary<Type, IList<PropertyInfo>> typeDictionary = new Dictionary<Type, IList<PropertyInfo>>();
+        private static readonly Dictionary<Type, IList<PropertyInfo>> typeDictionary =
+            new Dictionary<Type, IList<PropertyInfo>>();
 
         public static IList<PropertyInfo> GetPropertiesForType<T>()
         {
@@ -109,7 +110,7 @@ namespace BabouExtensions
         {
             var properties = GetPropertiesForType<T>();
 
-            return (from object row in table.Rows select CreateItemFromRow<T>((DataRow)row, properties)).ToList();
+            return (from object row in table.Rows select CreateItemFromRow<T>((DataRow) row, properties)).ToList();
         }
 
         private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
@@ -158,7 +159,9 @@ namespace BabouExtensions
             }
 
             var htmlBuilder = new StringBuilder();
-            var tableStyle = string.IsNullOrEmpty(options.TableStyle) ? "style=\"width: 100%; border-collapse: collapse; border: 1px solid navy;text-align: left;\" cellpadding=\"10\"" : options.TableStyle;
+            var tableStyle = string.IsNullOrEmpty(options.TableStyle)
+                ? "style=\"width: 100%; border-collapse: collapse; border: 1px solid navy;text-align: left;\" cellpadding=\"10\""
+                : options.TableStyle;
             //Create Top Portion of HTML Document
             htmlBuilder.AppendFormat("<table {0}>", tableStyle);
 
@@ -177,12 +180,14 @@ namespace BabouExtensions
             //Create Data Rows
             for (var r = 0; r < targetTable.Rows.Count; r++)
             {
-                htmlBuilder.Append($"<tr style=\"background-color: {(r % 2 == 0 ? options.TableEvenRowBgHex : options.TableOddRowBgHex)};\">");
+                htmlBuilder.Append(
+                    $"<tr style=\"background-color: {(r % 2 == 0 ? options.TableEvenRowBgHex : options.TableOddRowBgHex)};\">");
 
                 for (var c = 0; c < targetTable.Columns.Count; c++)
                 {
                     htmlBuilder.Append($"<td style=\"{options.ItemStyles[c]}\">");
-                    htmlBuilder.Append(string.Format(options.ItemFormats[c], targetTable.Rows[r][targetTable.Columns[c].ColumnName]));
+                    htmlBuilder.Append(string.Format(options.ItemFormats[c],
+                        targetTable.Rows[r][targetTable.Columns[c].ColumnName]));
                     htmlBuilder.Append("</td>");
                 }
 
@@ -194,8 +199,10 @@ namespace BabouExtensions
                 var totalAmount = targetTable.Compute($"SUM({options.TotalColumnName})", string.Empty);
 
                 htmlBuilder.Append("<tr>");
-                htmlBuilder.Append($"<td style=\"border-top:2px double navy; font-weight:bold;\" colspan=\"{targetTable.Columns.Count - 1}\">Total:</td>");
-                htmlBuilder.Append($"<td style=\"border-top:2px double navy; font-weight:bold; text-align:right;\">{totalAmount:C}</td>");
+                htmlBuilder.Append(
+                    $"<td style=\"border-top:2px double navy; font-weight:bold;\" colspan=\"{targetTable.Columns.Count - 1}\">Total:</td>");
+                htmlBuilder.Append(
+                    $"<td style=\"border-top:2px double navy; font-weight:bold; text-align:right;\">{totalAmount:C}</td>");
                 htmlBuilder.Append("</tr>");
             }
 

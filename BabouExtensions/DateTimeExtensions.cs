@@ -7,7 +7,6 @@ namespace BabouExtensions
     /// </summary>
     public static class DateTimeExtensions
     {
-
         /// <summary>
         /// Determins if two dates are within a range.
         /// </summary>
@@ -72,10 +71,10 @@ namespace BabouExtensions
             }
             if (delta < 31104000) // 12 * 30 * 24 * 60 * 60
             {
-                var months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+                var months = Convert.ToInt32(Math.Floor((double) ts.Days / 30));
                 return months <= 1 ? "one month ago" : months + " months ago";
             }
-            var years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+            var years = Convert.ToInt32(Math.Floor((double) ts.Days / 365));
             return years <= 1 ? "one year ago" : years + " years ago";
         }
 

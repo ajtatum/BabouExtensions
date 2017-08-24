@@ -73,7 +73,8 @@ namespace BabouExtensions
         /// <param name="condition"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> source, bool condition, Expression<Func<TSource, bool>> predicate)
+        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> source, bool condition,
+            Expression<Func<TSource, bool>> predicate)
         {
             return condition ? source.Where(predicate) : source;
         }
@@ -86,7 +87,8 @@ namespace BabouExtensions
         /// <param name="condition"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> source, bool condition, Expression<Func<TSource, int, bool>> predicate)
+        public static IQueryable<TSource> WhereIf<TSource>(this IQueryable<TSource> source, bool condition,
+            Expression<Func<TSource, int, bool>> predicate)
         {
             return condition ? source.Where(predicate) : source;
         }
@@ -99,7 +101,8 @@ namespace BabouExtensions
         /// <param name="condition"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, bool> predicate)
+        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition,
+            Func<TSource, bool> predicate)
         {
             return condition ? source.Where(predicate) : source;
         }
@@ -112,12 +115,14 @@ namespace BabouExtensions
         /// <param name="condition"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, int, bool> predicate)
+        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition,
+            Func<TSource, int, bool> predicate)
         {
             return condition ? source.Where(predicate) : source;
         }
 
-        public static IQueryable<TSource> Between<TSource, TKey>(this IQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector, TKey low, TKey high) where TKey : IComparable<TKey>
+        public static IQueryable<TSource> Between<TSource, TKey>(this IQueryable<TSource> source,
+            Expression<Func<TSource, TKey>> keySelector, TKey low, TKey high) where TKey : IComparable<TKey>
         {
             if (keySelector != null)
             {
@@ -225,7 +230,8 @@ namespace BabouExtensions
         /// var qry = dbContext.Table.MultiValueContainsAny(manyParam, x => x.FirstName).ToList();
         /// </code>
         /// <returns></returns>
-        public static IQueryable<T> MultiValueContainsAny<T>(this IQueryable<T> source, ICollection<string> searchKeys, Expression<Func<T, string>> fieldSelector)
+        public static IQueryable<T> MultiValueContainsAny<T>(this IQueryable<T> source, ICollection<string> searchKeys,
+            Expression<Func<T, string>> fieldSelector)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -234,15 +240,19 @@ namespace BabouExtensions
             if (searchKeys == null || searchKeys.Count == 0)
                 return source;
 
-            var containsMethod = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
+            var containsMethod = typeof(string).GetMethod("Contains", new Type[] {typeof(string)});
             Expression expression = null;
             foreach (var searchKeyPart in searchKeys)
             {
                 var tmp = new Tuple<string>(searchKeyPart);
-                Expression searchKeyExpression = Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1"));
-                Expression callContainsMethod = Expression.Call(fieldSelector.Body, containsMethod, searchKeyExpression);
+                Expression searchKeyExpression =
+                    Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1"));
+                Expression callContainsMethod =
+                    Expression.Call(fieldSelector.Body, containsMethod, searchKeyExpression);
 
-                expression = expression == null ? callContainsMethod : Expression.OrElse(expression, callContainsMethod);
+                expression = expression == null
+                    ? callContainsMethod
+                    : Expression.OrElse(expression, callContainsMethod);
             }
             return source.Where(Expression.Lambda<Func<T, bool>>(expression, fieldSelector.Parameters));
         }
@@ -265,7 +275,8 @@ namespace BabouExtensions
         /// var qry = dbContext.Table.MultiValueContainsAnyAll(manyParams, false, x => new [] { x.FirstName, x.LastName, x.NickName }).ToList();
         /// </code>
         /// <returns></returns>
-        public static IQueryable<T> MultiValueContainsAnyAll<T>(this IQueryable<T> source, ICollection<string> searchKeys, bool all, Expression<Func<T, string[]>> fieldSelectors)
+        public static IQueryable<T> MultiValueContainsAnyAll<T>(this IQueryable<T> source,
+            ICollection<string> searchKeys, bool all, Expression<Func<T, string[]>> fieldSelectors)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -273,19 +284,21 @@ namespace BabouExtensions
                 throw new ArgumentNullException(nameof(fieldSelectors));
             var newArray = fieldSelectors.Body as NewArrayExpression;
             if (newArray == null)
-                throw new ArgumentOutOfRangeException(nameof(fieldSelectors), fieldSelectors, "You need to use fieldSelectors similar to 'x => new string [] { x.LastName, x.FirstName, x.NickName }'; other forms not handled.");
+                throw new ArgumentOutOfRangeException(nameof(fieldSelectors), fieldSelectors,
+                    "You need to use fieldSelectors similar to 'x => new string [] { x.LastName, x.FirstName, x.NickName }'; other forms not handled.");
             if (newArray.Expressions.Count == 0)
                 throw new ArgumentException("No field selected.");
             if (searchKeys == null || searchKeys.Count == 0)
                 return source;
 
-            var containsMethod = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
+            var containsMethod = typeof(string).GetMethod("Contains", new Type[] {typeof(string)});
             Expression expression = null;
 
             foreach (var searchKeyPart in searchKeys)
             {
                 var tmp = new Tuple<string>(searchKeyPart);
-                Expression searchKeyExpression = Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1"));
+                Expression searchKeyExpression =
+                    Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1"));
 
                 Expression oneValueExpression = null;
                 foreach (var fieldSelector in newArray.Expressions)
@@ -326,11 +339,12 @@ namespace BabouExtensions
                     throw new Exception("No property '" + property + "' in + " + typeof(T).Name + "'");
                 }
 
-                return @descending ? list.OrderByDescending(x => prop.GetValue(x, null)) : list.OrderBy(x => prop.GetValue(x, null));
+                return @descending
+                    ? list.OrderByDescending(x => prop.GetValue(x, null))
+                    : list.OrderBy(x => prop.GetValue(x, null));
             }
 
             return list;
         }
     }
-
 }

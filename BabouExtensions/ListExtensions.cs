@@ -13,7 +13,9 @@ namespace BabouExtensions
         {
             [ThreadStatic] private static Random Local;
 
-            public static Random ThisThreadsRandom => Local ?? (Local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
+            public static Random ThisThreadsRandom => Local ?? (Local =
+                                                          new Random(unchecked(Environment.TickCount * 31 + Thread
+                                                                                   .CurrentThread.ManagedThreadId)));
         }
 
         public static void Shuffle<T>(this IList<T> list)
