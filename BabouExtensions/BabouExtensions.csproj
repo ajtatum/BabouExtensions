@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Product>Babou Extensions</Product>
-    <PackageIconUrl>https://github.com/ajtatum/BabouExtensions/raw/master/Babou.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/ajtatum/BabouExtensions</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>

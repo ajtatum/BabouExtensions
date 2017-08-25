@@ -11,7 +11,7 @@
 	    <owners>ajtatum</owners>
 	    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
 	    <licenseUrl>https://github.com/ajtatum/BabouExtensions</licenseUrl>
-	    <iconUrl>https://github.com/ajtatum/BabouExtensions/raw/master/Babou.png</iconUrl>
+	    <iconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png</iconUrl>
 	    <requireLicenseAcceptance>false</requireLicenseAcceptance>
 	    <language>en-US</language>
 	    <tags>extension-methods extensions extension net-standard net-core csharp</tags>

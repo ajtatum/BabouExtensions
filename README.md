@@ -1,7 +1,7 @@
 # Babou Extensions
 [![Build status](https://ci.appveyor.com/api/projects/status/2um6nsg5bub058nv?svg=true)](https://ci.appveyor.com/project/ajtatum/babouextensions)
 
-![Babou](https://vignette2.wikia.nocookie.net/archer/images/6/65/Babou.png/revision/latest?cb=20150318222646)
+![Babou](https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png)
 
 Babou Extensions is just another extension method project using .NET Standard 2.0.
 
