@@ -1,13 +1,18 @@
+os: linux
+dist: trusty
+sudo: required
+
 language: csharp
+dotnet: 2.0.0
 solution: BabouExtensions.sln
 branches:
   only:
   - master
 install:
   - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - mono nuget.exe restore BabouExtensions.sln
+  - dotnet restore BabouExtensions.sln
 script:
-  - xbuild /p:Configuration=Release BabouExtensions.sln
+  - dotnet build -f netstandard2.0 BabouExtensions.sln
   - mono nuget.exe pack ./BabouExtensions/BabouExtensions.nuspec -Version $MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
   - mono nuget.exe setApiKey $NUGET_API_KEY -Source https://www.nuget.org -Verbosity quiet
   - mono nuget.exe push BabouExtensions.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -Source https://www.nuget.org/api/v2/package
