@@ -16,5 +16,5 @@ Babou Extensions is just another extension method project using .NET Standard 2.
 ### Install
 
   - Via NuGet at https://www.nuget.org/packages/BabouExtensions/
-    -- **Package Manager:** Install-Package BabouExtensions
-    -- **.NET CLI:** dotnet add package BabouExtensions
+    - **Package Manager:** Install-Package BabouExtensions
+    - **.NET CLI:** dotnet add package BabouExtensions
