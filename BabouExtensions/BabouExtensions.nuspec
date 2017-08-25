@@ -1,14 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
-  <metadata>
-    <id>BabouExtensions</id>
-    <version>1.0.0</version>
-    <title>Babou Extensions</title>
-    <authors>AJ Tatum</authors>
-    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
-    <description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</description>
-    <language>en-US</language>
-    <tags>extension-methods extensions extension</tags>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+	    <id>BabouExtensions</id>
+	    <version>1.0.0</version>
+	    <description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</description>
+	    <authors>ajtatum</authors>
+	    <!-- Optional elements -->
+	    <title>Babou Extensions</title>
+	    <owners>ajtatum</owners>
+	    <projectUrl>https://github.com/ajtatum/BabouExtensions</projectUrl>
+	    <licenseUrl>https://github.com/ajtatum/BabouExtensions</licenseUrl>
+	    <iconUrl>https://github.com/ajtatum/BabouExtensions/raw/master/Babou.png</iconUrl>
+	    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	    <language>en-US</language>
+	    <tags>extension-methods extensions extension net-standard net-core csharp</tags>
   </metadata>
 </package>
