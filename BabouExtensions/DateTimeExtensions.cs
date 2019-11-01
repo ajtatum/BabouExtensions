@@ -8,26 +8,26 @@ namespace BabouExtensions
     public static class DateTimeExtensions
     {
         /// <summary>
-        /// Determins if two dates are within a range.
+        /// Determines if two dates are within a range.
         /// </summary>
-        /// <param name="dt">The Current DateTime</param>
+        /// <param name="value">The Current DateTime</param>
         /// <param name="rangeBeg">Beginning DateTime Range</param>
         /// <param name="rangeEnd">End of DateTime Range</param>
         /// <returns></returns>
-        public static bool IsBetween(this DateTime dt, DateTime rangeBeg, DateTime rangeEnd)
+        public static bool IsBetween(this DateTime value, DateTime rangeBeg, DateTime rangeEnd)
         {
-            return dt.Ticks >= rangeBeg.Ticks && dt.Ticks <= rangeEnd.Ticks;
+            return value.Ticks >= rangeBeg.Ticks && value.Ticks <= rangeEnd.Ticks;
         }
 
         /// <summary>
         /// Calculates age based on DateTime specified
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static int CalculateAge(this DateTime dateTime)
+        public static int CalculateAge(this DateTime value)
         {
-            var age = DateTime.Now.Year - dateTime.Year;
-            if (DateTime.Now < dateTime.AddYears(age))
+            var age = DateTime.Now.Year - value.Year;
+            if (DateTime.Now < value.AddYears(age))
                 age--;
             return age;
         }
@@ -81,11 +81,11 @@ namespace BabouExtensions
         /// <summary>
         /// Returns the date as yyyy-MM-dd
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static string ToShortString(this DateTime input)
+        public static string ToShortString(this DateTime value)
         {
-            return input.ToString("yyyy-MM-dd");
+            return value.ToString("yyyy-MM-dd");
         }
     }
 }

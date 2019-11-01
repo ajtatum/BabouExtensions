@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace BabouExtensions
 {
+    /// <summary>
+    /// Extensions for HttpRequest in AspNetCore
+    /// </summary>
     public static class HttpRequestExtensions
     {
 
@@ -21,8 +22,8 @@ namespace BabouExtensions
             if (encoding == null)
                 encoding = Encoding.UTF8;
 
-            using (var reader = new StreamReader(request.Body, encoding))
-                return await reader.ReadToEndAsync();
+            using var reader = new StreamReader(request.Body, encoding);
+            return await reader.ReadToEndAsync();
         }
 
         /// <summary>
@@ -32,11 +33,9 @@ namespace BabouExtensions
         /// <returns></returns>
         public static async Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
-            using (var ms = new MemoryStream(2048))
-            {
-                await request.Body.CopyToAsync(ms);
-                return ms.ToArray();
-            }
+            await using var ms = new MemoryStream(2048);
+            await request.Body.CopyToAsync(ms);
+            return ms.ToArray();
         }
     }
 }

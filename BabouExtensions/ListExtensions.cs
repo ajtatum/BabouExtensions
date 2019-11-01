@@ -18,6 +18,11 @@ namespace BabouExtensions
                                                                                    .CurrentThread.ManagedThreadId)));
         }
 
+        /// <summary>
+        /// Shuffles a list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <typeparam name="T"></typeparam>
         public static void Shuffle<T>(this IList<T> list)
         {
             var n = list.Count;

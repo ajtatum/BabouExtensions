@@ -11,6 +11,12 @@ namespace BabouExtensions
 {
     public static class LinqExtensions
     {
+        /// <summary>
+        /// Checks if an IEnumerable is Empty
+        /// </summary>
+        /// <param name="source"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
             //http://stackoverflow.com/a/41324/397186
@@ -157,9 +163,14 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string ToString<T>(this IEnumerable<T> self, Func<T, object> function)
         {
+            if (function == null)
+            {
+                throw new ArgumentNullException(nameof(function));
+            }
+
             var result = new StringBuilder();
 
-            foreach (var item in self) result.Append(function?.Invoke(item));
+            foreach (var item in self) result.Append(function(item));
 
             return result.ToString();
         }
@@ -241,19 +252,9 @@ namespace BabouExtensions
                 return source;
 
             var containsMethod = typeof(string).GetMethod("Contains", new Type[] {typeof(string)});
-            Expression expression = null;
-            foreach (var searchKeyPart in searchKeys)
-            {
-                var tmp = new Tuple<string>(searchKeyPart);
-                Expression searchKeyExpression =
-                    Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1"));
-                Expression callContainsMethod =
-                    Expression.Call(fieldSelector.Body, containsMethod, searchKeyExpression);
-
-                expression = expression == null
-                    ? callContainsMethod
-                    : Expression.OrElse(expression, callContainsMethod);
-            }
+            var expression = (from searchKeyPart in searchKeys select new Tuple<string>(searchKeyPart) into tmp select Expression.Property(Expression.Constant(tmp), tmp.GetType().GetProperty("Item1") ?? throw new InvalidOperationException()) into searchKeyExpression select Expression.Call(fieldSelector.Body, containsMethod ?? throw new InvalidOperationException(), (Expression) searchKeyExpression)).Aggregate<Expression, Expression>(null, (current, callContainsMethod) => current == null
+                ? callContainsMethod
+                : Expression.OrElse(current, callContainsMethod));
             return source.Where(Expression.Lambda<Func<T, bool>>(expression, fieldSelector.Parameters));
         }
 
@@ -317,6 +318,14 @@ namespace BabouExtensions
             return source.Where(Expression.Lambda<Func<T, bool>>(expression, fieldSelectors.Parameters));
         }
 
+        /// <summary>
+        /// Orders a list by a sort expression
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="sortExpression"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> list, string sortExpression)
         {
             sortExpression += "";
@@ -329,7 +338,7 @@ namespace BabouExtensions
 
                 if (parts.Length > 1)
                 {
-                    descending = parts[1].ToLower().Contains("esc");
+                    descending = parts[1].ToLower().Contains("desc");
                 }
 
                 var prop = typeof(T).GetProperty(property);

@@ -9,6 +9,11 @@ namespace BabouExtensions
 {
     public static class DataExtensions
     {
+        /// <summary>
+        /// Checks if the DataSet is empty
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <returns></returns>
         public static bool IsEmpty(this DataSet dataSet)
         {
             return dataSet == null ||
@@ -106,6 +111,12 @@ namespace BabouExtensions
             return typeDictionary[type];
         }
 
+        /// <summary>
+        /// Generates a List from a DataTable
+        /// </summary>
+        /// <param name="table"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IList<T> ToList<T>(this DataTable table) where T : new()
         {
             var properties = GetPropertiesForType<T>();

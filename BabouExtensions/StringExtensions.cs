@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Uppercases the first leter of a string.
+        /// Uppercases the first letter of a string.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -77,19 +78,34 @@ namespace BabouExtensions
             return truncatedString;
         }
 
-        public static string ToStringOrDefault<T>(this T? nullable, string defaultValue) where T : struct
+        /// <summary>
+        /// Returns an object as string or the default value if source.HasValue is false
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="defaultValue"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static string ToStringOrDefault<T>(this T? source, string defaultValue) where T : struct
         {
-            return nullable?.ToString() ?? defaultValue;
-        }
-
-        public static string ToStringOrDefault<T>(this T? nullable, string format, string defaultValue)
-            where T : struct, IFormattable
-        {
-            return nullable?.ToString(format, CultureInfo.CurrentCulture) ?? defaultValue;
+            return source?.ToString() ?? defaultValue;
         }
 
         /// <summary>
-        /// Goes through the string and addes a space between capital letters, excluding the first character.
+        /// Returns an object as string or the default value if source.HasValue is false. If source has a source, then the resulting string will be formatted in desired output
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="format"></param>
+        /// <param name="defaultValue"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static string ToStringOrDefault<T>(this T? source, string format, string defaultValue)
+            where T : struct, IFormattable
+        {
+            return source?.ToString(format, CultureInfo.CurrentCulture) ?? defaultValue;
+        }
+
+        /// <summary>
+        /// Goes through the string and adds a space between capital letters, excluding the first character.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -132,6 +148,11 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string StripHtml(this string source) => new Regex(@"<[^>]*>").Replace(source, " ");
 
+        /// <summary>
+        /// Removes line endings
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static string RemoveLineEndings(this string source)
         {
             if (string.IsNullOrEmpty(source))
@@ -145,8 +166,21 @@ namespace BabouExtensions
                 .Replace(lineSeparator, string.Empty).Replace(paragraphSeparator, string.Empty);
         }
 
+        /// <summary>
+        /// Removes Trailing Spaces
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string RemoveTrailingSpaces(this string value) => value.TrimStart().TrimEnd();
 
+        /// <summary>
+        /// Gets words from the source
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="count"></param>
+        /// <param name="wordDelimiter"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public static string[] GetWords(this string source, int count = -1, string[] wordDelimiter = null,
             StringSplitOptions options = StringSplitOptions.None)
         {
@@ -241,6 +275,11 @@ namespace BabouExtensions
             return prevdash ? sb.ToString().Substring(0, sb.Length - 1) : sb.ToString();
         }
 
+        /// <summary>
+        /// Remaps International Char to Ascii
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static string RemapInternationalCharToAscii(char c)
         {
             var s = c.ToString().ToLowerInvariant();
@@ -319,10 +358,30 @@ namespace BabouExtensions
             return "";
         }
 
+        /// <summary>
+        /// Checks if source is a valid URL
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out Uri uri)
                                                              && (uri.Scheme == Uri.UriSchemeHttp
                                                                  || uri.Scheme == Uri.UriSchemeHttps
                                                                  || uri.Scheme == Uri.UriSchemeFtp
                                                                  || uri.Scheme == Uri.UriSchemeMailto);
+
+        /// <summary>
+        /// Generates a list from a string based on the delimiter. Replaces line breaks and tabs with delimiter.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="delimiter"></param>
+        /// <returns></returns>
+        public static List<string> ToList(this string source, string delimiter = ",")
+        {
+            var cleanString = Regex.Replace(source, @"\r\n?|\n", delimiter);
+            cleanString = cleanString.Replace("\t", delimiter);
+
+            var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
+            return stringList;
+        }
     }
 }
