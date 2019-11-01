@@ -375,7 +375,7 @@ namespace BabouExtensions
         /// <param name="source"></param>
         /// <param name="delimiter"></param>
         /// <returns></returns>
-        public static List<string> ToList(this string source, char delimiter = ',')
+        public static List<string> GetList(this string source, char delimiter = ',')
         {
             if(string.IsNullOrEmpty(source))
                 return new List<string>();
