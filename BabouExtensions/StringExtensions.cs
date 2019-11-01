@@ -388,5 +388,30 @@ namespace BabouExtensions
             var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
             return stringList;
         }
+
+        /// <summary>
+        /// Generates a list from a string based on the delimiter. Replaces line breaks and tabs with delimiter.
+        /// </summary>
+        /// <param name="source">Source string</param>
+        /// <param name="delimiter">Character to split on</param>
+        /// <param name="sourceList">If source is empty, returns an empty list</param>
+        /// <returns>Either an empty list if source is empty or a list of strings.</returns>
+        public static bool TryGetList(this string source, char delimiter, out List<string> sourceList)
+        {
+            if (string.IsNullOrEmpty(source))
+            {
+                sourceList = new List<string>();
+                return false;
+            }
+
+            var charString = delimiter.ToString();
+
+            var cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
+            cleanString = cleanString.Replace("\t", charString);
+
+            var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
+            sourceList = stringList;
+            return true;
+        }
     }
 }
