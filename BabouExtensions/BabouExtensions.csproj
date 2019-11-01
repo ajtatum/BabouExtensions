@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <Version>1.2.0</Version>
         <Title>Babou Extensions</Title>
         <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
@@ -22,6 +22,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression></PackageLicenseExpression>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

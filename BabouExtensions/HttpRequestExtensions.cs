@@ -33,7 +33,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static async Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
-            await using var ms = new MemoryStream(2048);
+            using var ms = new MemoryStream(2048);
             await request.Body.CopyToAsync(ms);
             return ms.ToArray();
         }

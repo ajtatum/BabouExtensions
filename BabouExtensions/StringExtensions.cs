@@ -375,10 +375,15 @@ namespace BabouExtensions
         /// <param name="source"></param>
         /// <param name="delimiter"></param>
         /// <returns></returns>
-        public static List<string> GetListFromText(this string source, string delimiter = ",")
+        public static List<string> ToList(this string source, char delimiter = ',')
         {
-            var cleanString = Regex.Replace(source, @"\r\n?|\n", delimiter);
-            cleanString = cleanString.Replace("\t", delimiter);
+            if(string.IsNullOrEmpty(source))
+                return new List<string>();
+
+            var charString = delimiter.ToString();
+
+            var cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
+            cleanString = cleanString.Replace("\t", charString);
 
             var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
             return stringList;
