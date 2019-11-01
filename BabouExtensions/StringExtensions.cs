@@ -375,7 +375,7 @@ namespace BabouExtensions
         /// <param name="source"></param>
         /// <param name="delimiter"></param>
         /// <returns></returns>
-        public static List<string> ToList(this string source, string delimiter = ",")
+        public static List<string> GetListFromText(this string source, string delimiter = ",")
         {
             var cleanString = Regex.Replace(source, @"\r\n?|\n", delimiter);
             cleanString = cleanString.Replace("\t", delimiter);
