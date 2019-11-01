@@ -1,35 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.2.0</Version>
-    <Title>Babou Extensions</Title>
-    <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
-    <Summary>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Summary>
-    <Authors>ajtatum</Authors>
-    <Owners>ajtatum</Owners>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageId>BabouExtensions</PackageId>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
-    <PackageTags>extension-methods extensions extension</PackageTags>
-    <PackageVersion>1.2.0</PackageVersion>
-    <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <Product>Babou Extensions</Product>
-    <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png</PackageIconUrl>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Version>1.2.0</Version>
+        <Title>Babou Extensions</Title>
+        <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
+        <Summary>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Summary>
+        <Authors>ajtatum</Authors>
+        <Owners>ajtatum</Owners>
+        <Copyright>Copyright 2019</Copyright>
+        <PackageId>BabouExtensions</PackageId>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
+        <PackageTags>extension-methods extensions extension</PackageTags>
+        <PackageVersion>1.2.0</PackageVersion>
+        <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Product>Babou Extensions</Product>
+        <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png</PackageIconUrl>
+        <PackageLicenseUrl></PackageLicenseUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression></PackageLicenseExpression>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile></DocumentationFile>
+        <OutputPath></OutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="2.0.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Update="NETStandard.Library" Version="2.0.0" />
+    </ItemGroup>
 
 </Project>
