@@ -14,10 +14,20 @@ namespace BabouExtensions
         /// Converts a string into proper title case.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="lowerCaseWords">Words to lowercase</param>
         /// <returns></returns>
-        public static string ToTitleCase(this string source)
+        public static string ToTitleCase(this string source, string[] lowerCaseWords = null)
         {
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(source.ToLower());
+            var result = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(source.ToLower());
+
+            if (lowerCaseWords != null)
+            {
+                const RegexOptions options = RegexOptions.Singleline | RegexOptions.IgnoreCase;
+                var lowerWordsSplit = string.Join("|", lowerCaseWords);
+                result = Regex.Replace(result, $@"({lowerWordsSplit})", m => m.Value.ToLower(), options);
+            }
+
+            return result;
         }
 
         /// <summary>
