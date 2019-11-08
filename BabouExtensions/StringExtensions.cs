@@ -51,6 +51,7 @@ namespace BabouExtensions
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">If T is not an Enum</exception>
         public static T GetEnumValueFromDescription<T>(this string source)
         {
             var type = typeof(T);
@@ -155,8 +156,9 @@ namespace BabouExtensions
         /// Removes HTML from a string.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="replacementString">What to replace the HTML with. Defaults to an empty space.</param>
         /// <returns></returns>
-        public static string StripHtml(this string source) => new Regex(@"<[^>]*>").Replace(source, " ");
+        public static string StripHtml(this string source, string replacementString = " ") => new Regex(@"<[^>]*>").Replace(source, replacementString);
 
         /// <summary>
         /// Removes line endings
