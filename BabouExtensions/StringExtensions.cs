@@ -507,13 +507,22 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Determines if a string is a valid date
+        /// Determines if a string is a valid date. Returns dateTime as a date or null.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool IsDate(this string source)
+        public static bool IsDate(this string source, out DateTime? dateTime)
         {
-            return !string.IsNullOrEmpty(source) && System.DateTime.TryParse(source, out _);
+            if (!string.IsNullOrEmpty(source) && System.DateTime.TryParse(source, out var realDateTime))
+            {
+                dateTime = realDateTime;
+                return true;
+            }
+            else
+            {
+                dateTime = null;
+                return false;
+            }
         }
 
         /// <summary>
