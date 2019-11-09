@@ -179,6 +179,37 @@ namespace BabouExtensions
         }
 
         /// <summary>
+        /// Removes tabs, line breaks, double spaces, etc.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string RemoveWhiteSpace(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return string.Empty;
+            }
+            var sb = new StringBuilder();
+
+            var lastCharWs = false;
+            foreach (var c in source)
+            {
+                if (char.IsWhiteSpace(c))
+                {
+                    if (lastCharWs) { continue; }
+                    sb.Append(' ');
+                    lastCharWs = true;
+                }
+                else
+                {
+                    sb.Append(c);
+                    lastCharWs = false;
+                }
+            }
+            return sb.ToString().Trim();
+        }
+
+        /// <summary>
         /// Removes Trailing Spaces
         /// </summary>
         /// <param name="value"></param>
