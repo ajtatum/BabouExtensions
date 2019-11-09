@@ -179,34 +179,21 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Removes tabs, line breaks, double spaces, etc.
+        /// Removes tabs, line breaks, double spaces, etc. Trims string as well.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="additionalReplacements"></param>
         /// <returns></returns>
-        public static string RemoveWhiteSpace(this string source)
+        public static string CleanString(this string source, string[] additionalReplacements = null)
         {
-            if (string.IsNullOrWhiteSpace(source))
-            {
-                return string.Empty;
-            }
-            var sb = new StringBuilder();
+            source = Regex.Replace(source, @"\r\n?|\n|\t", string.Empty);
+            source = source.Replace("  ", " ");
+            if(additionalReplacements != null)
+                source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, string.Empty));
+            
+            source = source.Trim();
 
-            var lastCharWs = false;
-            foreach (var c in source)
-            {
-                if (char.IsWhiteSpace(c))
-                {
-                    if (lastCharWs) { continue; }
-                    sb.Append(' ');
-                    lastCharWs = true;
-                }
-                else
-                {
-                    sb.Append(c);
-                    lastCharWs = false;
-                }
-            }
-            return sb.ToString().Trim();
+            return source;
         }
 
         /// <summary>
