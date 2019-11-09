@@ -9,6 +9,9 @@ using System.Text;
 
 namespace BabouExtensions
 {
+    /// <summary>
+    /// Linq Extensions
+    /// </summary>
     public static class LinqExtensions
     {
         /// <summary>

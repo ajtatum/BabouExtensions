@@ -7,6 +7,9 @@ using System.Text;
 
 namespace BabouExtensions
 {
+    /// <summary>
+    /// Data Extenstions
+    /// </summary>
     public static class DataExtensions
     {
         /// <summary>

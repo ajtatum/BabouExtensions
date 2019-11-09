@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BabouExtensions
 {
+    /// <summary>
+    /// String Extensions
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>
@@ -179,16 +183,19 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Removes tabs, line breaks, double spaces, etc. Trims string as well.
+        /// Removes tabs, line breaks, extra spaces, etc. Trims string as well.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="additionalReplacements"></param>
         /// <returns></returns>
         public static string CleanString(this string source, string[] additionalReplacements = null)
         {
+            if (string.IsNullOrEmpty(source))
+                return string.Empty;
+
             source = Regex.Replace(source, @"\r\n?|\n|\t", string.Empty);
-            source = source.Replace("  ", " ");
-            if(additionalReplacements != null)
+            source = Regex.Replace(source, @"[ ]{2,}", string.Empty);
+            if (additionalReplacements != null)
                 source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, string.Empty));
             
             source = source.Trim();
@@ -199,9 +206,15 @@ namespace BabouExtensions
         /// <summary>
         /// Removes Trailing Spaces
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        public static string RemoveTrailingSpaces(this string value) => value.TrimStart().TrimEnd();
+        public static string RemoveTrailingSpaces(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return string.Empty;
+
+            return source.TrimStart().TrimEnd();
+        } 
 
         /// <summary>
         /// Gets words from the source
@@ -211,10 +224,10 @@ namespace BabouExtensions
         /// <param name="wordDelimiter"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static string[] GetWords(this string source, int count = -1, string[] wordDelimiter = null,
-            StringSplitOptions options = StringSplitOptions.None)
+        public static string[] GetWords(this string source, int count = -1, string[] wordDelimiter = null, StringSplitOptions options = StringSplitOptions.None)
         {
-            if (string.IsNullOrEmpty(source)) return new string[] { };
+            if (string.IsNullOrEmpty(source)) 
+                return new string[] { };
 
             if (count < 0)
                 return source.Split(wordDelimiter, options);
@@ -261,16 +274,17 @@ namespace BabouExtensions
         /// Produces optional, URL-friendly version of a title, "like-this-one".
         /// </summary>
         /// <param name="source">String to make URL Friendly</param>
-        public static string UrlFriendly(this string source)
+        /// <param name="maxLength">Maximum length of the url</param>
+        public static string UrlFriendly(this string source, int maxLength)
         {
-            if (source == null) return "";
+            if (string.IsNullOrEmpty(source)) 
+                return string.Empty;
 
-            const int maxlen = 250;
             var len = source.Length;
             var prevdash = false;
             var sb = new StringBuilder(len);
 
-            for (int i = 0; i < len; i++)
+            for (var i = 0; i < len; i++)
             {
                 var c = source[i];
                 if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
@@ -293,13 +307,15 @@ namespace BabouExtensions
                         prevdash = true;
                     }
                 }
-                else if ((int) c >= 128)
+                else if (c >= 128)
                 {
                     var prevlen = sb.Length;
                     sb.Append(RemapInternationalCharToAscii(c));
-                    if (prevlen != sb.Length) prevdash = false;
+                    if (prevlen != sb.Length) 
+                        prevdash = false;
                 }
-                if (i == maxlen) break;
+                if (i == maxLength) 
+                    break;
             }
 
             return prevdash ? sb.ToString().Substring(0, sb.Length - 1) : sb.ToString();
@@ -393,7 +409,7 @@ namespace BabouExtensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out Uri uri)
+        public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out var uri)
                                                              && (uri.Scheme == Uri.UriSchemeHttp
                                                                  || uri.Scheme == Uri.UriSchemeHttps
                                                                  || uri.Scheme == Uri.UriSchemeFtp
@@ -488,6 +504,89 @@ namespace BabouExtensions
                 return string.Empty;
 
             return System.Net.WebUtility.HtmlEncode(source);
+        }
+
+        /// <summary>
+        /// Determines if a string is a valid date
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsDate(this string source)
+        {
+            return !string.IsNullOrEmpty(source) && System.DateTime.TryParse(source, out _);
+        }
+
+        /// <summary>
+        /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.
+        /// </summary>
+        /// <param name="stringToEncrypt">String that must be encrypted.</param>
+        /// <param name="key">Encryption Key.</param>
+        /// <returns>A string representing a byte array separated by a minus sign.</returns>
+        /// <exception cref="ArgumentException">Occurs when stringToEncrypt or key is null or empty.</exception>
+        public static string Encrypt(this string stringToEncrypt, string key)
+        {
+            if (string.IsNullOrEmpty(stringToEncrypt))
+            {
+                throw new ArgumentException("An empty string value cannot be encrypted.");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException("Cannot encrypt using an empty key. Please supply an encryption key.");
+            }
+
+            var cspp = new CspParameters
+            {
+                KeyContainerName = key
+            };
+
+            var rsa = new RSACryptoServiceProvider(cspp)
+            {
+                PersistKeyInCsp = true
+            };
+
+            var bytes = rsa.Encrypt(Encoding.UTF8.GetBytes(stringToEncrypt), true);
+
+            return BitConverter.ToString(bytes);
+        }
+
+        /// <summary>
+        /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
+        /// </summary>
+        /// <param name="stringToDecrypt">String that must be decrypted.</param>
+        /// <param name="key">The Decryption Key.</param>
+        /// <returns>The decrypted string or null if decryption failed.</returns>
+        /// <exception cref="ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
+        public static string Decrypt(this string stringToDecrypt, string key)
+        {
+            string result = null;
+
+            if (string.IsNullOrEmpty(stringToDecrypt))
+            {
+                throw new ArgumentException("An empty string value cannot be encrypted.");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException("Cannot decrypt using an empty key. Please supply a decryption key.");
+            }
+
+            var cspp = new CspParameters
+            {
+                KeyContainerName = key
+            };
+
+            var rsa = new RSACryptoServiceProvider(cspp);
+            rsa.PersistKeyInCsp = true;
+
+            var decryptArray = stringToDecrypt.Split(new[] { "-" }, StringSplitOptions.None);
+            var decryptByteArray = Array.ConvertAll(decryptArray, (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
+
+            var bytes = rsa.Decrypt(decryptByteArray, true);
+
+            result = Encoding.UTF8.GetString(bytes);
+
+            return result;
         }
     }
 }

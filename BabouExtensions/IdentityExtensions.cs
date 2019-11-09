@@ -1,55 +1,30 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Security.Principal;
 
 namespace BabouExtensions
 {
+    /// <summary>
+    /// Identity Extensions
+    /// </summary>
     public static class IdentityExtensions
     {
-        public static string GetFirstName(this IIdentity identity)
+        /// <summary>
+        /// Gets property from <see cref="IIdentity"/>
+        /// </summary>
+        /// <param name="identity"></param>
+        /// <param name="property">Property to search for in IIdentity</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string GetProperty(this IIdentity identity, string property)
         {
-            var claim = ((ClaimsIdentity) identity).FindFirst("FirstName");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
+            if (identity == null)
+                throw new ArgumentNullException(nameof(identity), "Identity cannot be null");
 
-        public static string GetLastName(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("LastName");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
+            if(string.IsNullOrEmpty(property))
+                throw new ArgumentNullException(nameof(property), "Property cannot be null or empty");
 
-        public static string GetTitle(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("Title");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
-
-        public static string GetLocation(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("Location");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
-
-        public static string GetCountry(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("Country");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
-
-        public static string GetState(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("State");
-            // Test for null to avoid issues during local testing
-            return (claim != null) ? claim.Value : string.Empty;
-        }
-
-        public static string GetOrganizationName(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity) identity).FindFirst("OrganizationName");
+            var claim = ((ClaimsIdentity) identity).FindFirst(property);
             // Test for null to avoid issues during local testing
             return (claim != null) ? claim.Value : string.Empty;
         }
