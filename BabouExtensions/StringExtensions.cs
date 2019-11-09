@@ -463,5 +463,31 @@ namespace BabouExtensions
         {
             return string.IsNullOrWhiteSpace(source);
         }
+
+        /// <summary>
+        /// Converts a string that has been HTML-encoded for HTTP transmission into a decoded string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string HtmlDecode(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return string.Empty;
+
+            return System.Net.WebUtility.HtmlDecode(source);
+        }
+
+        /// <summary>
+        /// Converts a string into an HTML-encoded string.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string HtmlEncode(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return string.Empty;
+
+            return System.Net.WebUtility.HtmlEncode(source);
+        }
     }
 }
