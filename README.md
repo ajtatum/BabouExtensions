@@ -1,5 +1,5 @@
 # Babou Extensions
-[![Build status](https://ci.appveyor.com/api/projects/status/2um6nsg5bub058nv?svg=true)](https://ci.appveyor.com/project/ajtatum/babouextensions) ![Nuget](https://img.shields.io/nuget/dt/BabouExtensions?style=plastic)
+[![Build status](https://ci.appveyor.com/api/projects/status/2um6nsg5bub058nv?svg=true)](https://ci.appveyor.com/project/ajtatum/babouextensions) ![Nuget](https://img.shields.io/nuget/dt/BabouExtensions)
 
 ![Babou](https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png)
 
