@@ -63,9 +63,9 @@ namespace BabouExtensions
                 throw new ArgumentException();
             var fields = type.GetFields();
             var field = fields.SelectMany(f => f.GetCustomAttributes(typeof(DescriptionAttribute), false),
-                    (f, a) => new {Field = f, Att = a})
-                .SingleOrDefault(a => ((DescriptionAttribute) a.Att).Description == source);
-            return (T) field?.Field.GetRawConstantValue();
+                    (f, a) => new { Field = f, Att = a })
+                .SingleOrDefault(a => ((DescriptionAttribute)a.Att).Description == source);
+            return (T)field?.Field.GetRawConstantValue();
         }
 
         /// <summary>
@@ -175,8 +175,8 @@ namespace BabouExtensions
             {
                 return source;
             }
-            var lineSeparator = ((char) 0x2028).ToString();
-            var paragraphSeparator = ((char) 0x2029).ToString();
+            var lineSeparator = ((char)0x2028).ToString();
+            var paragraphSeparator = ((char)0x2029).ToString();
 
             return source.Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty)
                 .Replace(lineSeparator, string.Empty).Replace(paragraphSeparator, string.Empty);
@@ -197,7 +197,7 @@ namespace BabouExtensions
             source = Regex.Replace(source, @"[ ]{2,}", string.Empty);
             if (additionalReplacements != null)
                 source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, string.Empty));
-            
+
             source = source.Trim();
 
             return source;
@@ -214,7 +214,7 @@ namespace BabouExtensions
                 return string.Empty;
 
             return source.TrimStart().TrimEnd();
-        } 
+        }
 
         /// <summary>
         /// Gets words from the source
@@ -226,7 +226,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string[] GetWords(this string source, int count = -1, string[] wordDelimiter = null, StringSplitOptions options = StringSplitOptions.None)
         {
-            if (string.IsNullOrEmpty(source)) 
+            if (string.IsNullOrEmpty(source))
                 return new string[] { };
 
             if (count < 0)
@@ -277,7 +277,7 @@ namespace BabouExtensions
         /// <param name="maxLength">Maximum length of the url</param>
         public static string UrlFriendly(this string source, int maxLength)
         {
-            if (string.IsNullOrEmpty(source)) 
+            if (string.IsNullOrEmpty(source))
                 return string.Empty;
 
             var len = source.Length;
@@ -295,7 +295,7 @@ namespace BabouExtensions
                 else if (c >= 'A' && c <= 'Z')
                 {
                     // tricky way to convert to lowercase
-                    sb.Append((char) (c | 32));
+                    sb.Append((char)(c | 32));
                     prevdash = false;
                 }
                 else if (c == ' ' || c == ',' || c == '.' || c == '/' ||
@@ -311,10 +311,10 @@ namespace BabouExtensions
                 {
                     var prevlen = sb.Length;
                     sb.Append(RemapInternationalCharToAscii(c));
-                    if (prevlen != sb.Length) 
+                    if (prevlen != sb.Length)
                         prevdash = false;
                 }
-                if (i == maxLength) 
+                if (i == maxLength)
                     break;
             }
 
@@ -416,20 +416,26 @@ namespace BabouExtensions
                                                                  || uri.Scheme == Uri.UriSchemeMailto);
 
         /// <summary>
-        /// Generates a list from a string based on the delimiter. Replaces line breaks and tabs with delimiter.
+        /// Generates a list from a string based on the delimiter.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="delimiter"></param>
+        /// <param name="replaceLineBreaksAndTabs">Replaces line breaks and tabs with delimiter.</param>
         /// <returns></returns>
-        public static List<string> GetList(this string source, char delimiter = ',')
+        public static List<string> GetList(this string source, char delimiter = ',', bool replaceLineBreaksAndTabs = true)
         {
-            if(string.IsNullOrEmpty(source))
+            if (string.IsNullOrEmpty(source))
                 return new List<string>();
 
             var charString = delimiter.ToString();
 
-            var cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
-            cleanString = cleanString.Replace("\t", charString);
+            var cleanString = source;
+
+            if (replaceLineBreaksAndTabs)
+            {
+                cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
+                cleanString = cleanString.Replace("\t", charString);
+            }
 
             var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
             return stringList;
@@ -619,6 +625,34 @@ namespace BabouExtensions
             }
             url = string.Empty;
             return false;
+        }
+
+        /// <summary>
+        /// Returns null or date in the format provided. Default format is yyyy-MM-dd
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="format">The format of the date time string.</param>
+        /// <returns></returns>
+        public static string TryGetDate(this string source, string format = "yyyy-MM-dd")
+        {
+            return source.IsDate(out var releaseDateTime) ? releaseDateTime?.ToString(format) : null;
+        }
+
+        /// <summary>
+        /// Returns a double or null value
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static double? TryGetDouble(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return null;
+
+            if (double.TryParse(source, out var rating))
+                return rating;
+
+            return null;
+
         }
     }
 }
