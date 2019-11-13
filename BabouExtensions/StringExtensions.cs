@@ -597,5 +597,28 @@ namespace BabouExtensions
 
             return result;
         }
+
+        /// <summary>
+        /// Tries to get a URL from a string. Also uses IsValidUrl extension.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool TryGetUrlFromString(this string source, out string url)
+        {
+            const string urlRegex = @"(?:(?:https?):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
+
+            if (Regex.IsMatch(source, urlRegex, RegexOptions.IgnoreCase))
+            {
+                var tempUrl = Regex.Match(source, urlRegex, RegexOptions.IgnoreCase).Value;
+                if (tempUrl.IsValidUrl())
+                {
+                    url = tempUrl;
+                    return true;
+                }
+            }
+            url = string.Empty;
+            return false;
+        }
     }
 }
