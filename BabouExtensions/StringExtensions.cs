@@ -610,7 +610,7 @@ namespace BabouExtensions
         /// <param name="source"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static bool TryGetUrlFromString(this string source, out string url)
+        public static bool TryGetUrl(this string source, out string url)
         {
             const string urlRegex = @"(?:(?:https?):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
 
