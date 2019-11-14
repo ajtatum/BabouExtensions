@@ -194,6 +194,8 @@ namespace BabouExtensions
                 return string.Empty;
 
             source = Regex.Replace(source, @"\r\n?|\n|\t", string.Empty);
+            source = Regex.Replace(source, @"(<br \/>|<br\/>|<\/ br>|<\/br>)", string.Empty);
+            source = Regex.Replace(source, @"(<p>)|(<\/p>)", string.Empty);
             source = Regex.Replace(source, @"[ ]{2,}", string.Empty);
             if (additionalReplacements != null)
                 source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, string.Empty));
