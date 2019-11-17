@@ -1,4 +1,5 @@
 # Babou Extensions
+
 [![Build status](https://ci.appveyor.com/api/projects/status/2um6nsg5bub058nv?svg=true)](https://ci.appveyor.com/project/ajtatum/babouextensions) ![Nuget](https://img.shields.io/nuget/dt/BabouExtensions)
 
 ![Babou](https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/Babou.png)
@@ -19,6 +20,10 @@ View the NuGet at https://www.nuget.org/packages/BabouExtensions/
 
 * **Package Manager:** Install-Package BabouExtensions
 * **.NET CLI:** dotnet add package BabouExtensions
+
+## Subscribe
+
+[Subscribe to Updates via PushBullet](https://www.pushbullet.com/channel?tag=babouextensions)
 
 ---
 Developed by AJ Tatum
