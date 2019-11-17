@@ -34,5 +34,19 @@ namespace BabouExtensions
                 list[n] = value;
             }
         }
+
+        /// <summary>
+        /// Allows you to easily add values to an ICollection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="S"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="values"></param>
+        public static void AddRange<T, S>(this ICollection<T> list, params S[] values)
+            where S : T
+        {
+            foreach (S value in values)
+                list.Add(value);
+        }
     }
 }
