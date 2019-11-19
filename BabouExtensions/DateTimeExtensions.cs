@@ -87,5 +87,15 @@ namespace BabouExtensions
         {
             return value.ToString("yyyy-MM-dd");
         }
+
+        static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// Converts a double Unix Time Stamp to a DateTime
+        /// </summary>
+        /// <param name="unixTimeStamp"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTimeFromUnix(this double unixTimeStamp)
+            => _epoch.AddSeconds(unixTimeStamp).ToLocalTime();
     }
 }

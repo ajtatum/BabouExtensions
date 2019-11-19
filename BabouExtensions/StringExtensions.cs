@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace BabouExtensions
 {
@@ -656,5 +657,13 @@ namespace BabouExtensions
             return null;
 
         }
+
+        /// <summary>
+        /// Easily converts a string to an object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static T To<T>(this string json) => JsonConvert.DeserializeObject<T>(json);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace BabouExtensions
@@ -48,5 +49,16 @@ namespace BabouExtensions
             foreach (S value in values)
                 list.Add(value);
         }
+
+        private static readonly Random _random = new Random((int)DateTime.Now.Ticks);
+
+        /// <summary>
+        /// Grabs a random element from an Enumerable
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T RandomElement<T>(this IList<T> enumerable)
+            => enumerable.ElementAt(_random.Next(0, enumerable.Count));
     }
 }
