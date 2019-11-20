@@ -34,7 +34,7 @@ namespace BabouExtensions
         /// <param name="bufferSize">Option - Defaults to -1</param>
         /// <param name="leaveOpen">Option - Set to true if you need to use the Request Body again</param>
         /// <returns></returns>
-        public static async Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding encoding = null, int? bufferSize = null, bool? leaveOpen = null)
+        public static async Task<string> GetRawBodyStringAsyncWithOptions(this HttpRequest request, Encoding encoding = null, int? bufferSize = null, bool? leaveOpen = null)
         {
             if (encoding == null)
                 encoding = Encoding.UTF8;
