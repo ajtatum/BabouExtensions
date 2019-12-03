@@ -12,7 +12,7 @@
         <PackageId>BabouExtensions</PackageId>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
-        <PackageTags>extension-methods extensions extension</PackageTags>
+        <PackageTags>extension-methods extensions extension babou</PackageTags>
         <PackageVersion>1.2.0</PackageVersion>
         <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
         <NeutralLanguage>en-US</NeutralLanguage>
