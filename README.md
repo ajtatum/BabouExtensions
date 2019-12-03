@@ -1,4 +1,6 @@
-# Babou Extensions
+![alt text](https://raw.githubusercontent.com/ajtatum/BabouMail/master/Babou.png "Babou loves extension methods!") <!-- markdownlint-disable -->
+
+# **Babou Extensions**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/2um6nsg5bub058nv?svg=true)](https://ci.appveyor.com/project/ajtatum/babouextensions) ![Nuget](https://img.shields.io/nuget/dt/BabouExtensions)
 
@@ -6,27 +8,33 @@
 
 Babou Extensions is just another extension method project using .NET Standard 2.0.
 
-## Extensions For...
+## **Extensions**
 
 * DataTables, DataSets
 * DateTime
 * Identity
+* HttpRequests
 * Linq
+* Lists, IEnumerable, and IQueryable
 * Strings
+* Validations and Assertions
 
-## Install
+## **Install**
 
 View the NuGet at https://www.nuget.org/packages/BabouExtensions/
 
 * **Package Manager:** Install-Package BabouExtensions
 * **.NET CLI:** dotnet add package BabouExtensions
 
-## Subscribe
+### **Subscribe**
 
 [Subscribe to Updates via PushBullet](https://www.pushbullet.com/channel?tag=babouextensions)
 
 ---
-Developed by AJ Tatum
+
+**Be sure to checkout [BabouMail](https://github.com/ajtatum/BabouMail)**
+
+#### Developed by AJ Tatum
 
 [![alt text][1.1]][1]
 [![alt text][2.1]][2]
@@ -35,16 +43,18 @@ Developed by AJ Tatum
 [![alt text][5.1]][5]
 [![alt text][6.1]][6]
 
-[1.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-linkedin-m.png (LinkedIn @ajtatum)
-[2.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-facebook-m.png (Facebook @ajtatum)
-[3.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-twitter-m.png (Twitter @ajtatum)
-[4.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-lastfm-m.png (LastFM @ajtatum)
-[5.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-git-m.png (GitHub @ajtatum)
-[6.1]: https://cdnjs.cloudflare.com/ajax/libs/webicons/2.0.0/webicons/webicon-blogger-m.png (ajtatum.com)
+[1.1]: https://img.icons8.com/clouds/50/000000/linkedin.png (LinkedIn @ajtatum)
+[2.1]: https://img.icons8.com/clouds/50/000000/facebook-new.png (Facebook @ajtatum)
+[3.1]: https://img.icons8.com/clouds/50/000000/twitter.png (Twitter @ajtatum)
+[4.1]: https://img.icons8.com/clouds/50/000000/music.png (LastFM @ajtatum)
+[5.1]: https://img.icons8.com/clouds/50/000000/github.png (GitHub @ajtatum)
+[6.1]: https://img.icons8.com/clouds/50/000000/domain.png (ajt.io)
 
 [1]: https://www.linkedin.com/in/ajtatum/
 [2]: https://www.facebook.com/ajtatum
 [3]: https://twitter.com/ajtatum
 [4]: https://www.last.fm/user/ajtatum
 [5]: https://github.com/ajtatum
-[6]: https://ajtatum.com/
+[6]: https://ajt.io/
+
+[Icons by Icons8](https://icons8.com/icon/118557/github)
