@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace BabouExtensions
+namespace BabouExtensions.AspNetCore
 {
     /// <summary>
     /// Extensions for HttpRequest in AspNetCore
@@ -45,7 +45,7 @@ namespace BabouExtensions
             if (leaveOpen == null)
                 leaveOpen = false;
 
-            var requestBody = string.Empty;
+            string requestBody;
 
             using (var reader = new StreamReader(request.Body, encoding: encoding, detectEncodingFromByteOrderMarks: false, bufferSize: bufferSize.Value, leaveOpen: leaveOpen.Value))
             {
@@ -62,7 +62,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static async Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
-            using var ms = new MemoryStream(2048);
+            await using var ms = new MemoryStream(2048);
             await request.Body.CopyToAsync(ms);
             return ms.ToArray();
         }

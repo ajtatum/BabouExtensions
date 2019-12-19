@@ -76,6 +76,7 @@ namespace BabouExtensions
         /// <param name="length">How long should the string be?</param>
         /// <param name="showSuffix">Do you want to show ellipses?</param>
         /// <returns></returns>
+        [Obsolete("Use WithMaxLength instead.")]
         public static string Truncate(this string source, int length, bool showSuffix)
         {
             var truncatedString = string.Empty;
@@ -94,30 +95,30 @@ namespace BabouExtensions
             return truncatedString;
         }
 
-        /// <summary>
-        /// Returns an object as string or the default value if source.HasValue is false
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="defaultValue"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static string ToStringOrDefault<T>(this T? source, string defaultValue) where T : struct
-        {
-            return source?.ToString() ?? defaultValue;
-        }
 
         /// <summary>
-        /// Returns an object as string or the default value if source.HasValue is false. If source has a source, then the resulting string will be formatted in desired output
+        /// Truncates a string and optionally adds suffix
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="format"></param>
-        /// <param name="defaultValue"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="source">The original strength</param>
+        /// <param name="maxLength">The max length of the string</param>
+        /// <param name="suffix">Suffix to add to the end of the string</param>
         /// <returns></returns>
-        public static string ToStringOrDefault<T>(this T? source, string format, string defaultValue)
-            where T : struct, IFormattable
+        public static string WithMaxLength(this string source, int maxLength, string suffix = null)
         {
-            return source?.ToString(format, CultureInfo.CurrentCulture) ?? defaultValue;
+            if (source == null)
+                return null;
+
+            if (source.Length <= maxLength) 
+                return source;
+
+            var returnValue = source.Substring(0, Math.Min(source.Length, maxLength));
+
+            if (suffix != null)
+            {
+                returnValue = $"{returnValue}{suffix}";
+            }
+
+            return returnValue;
         }
 
         /// <summary>
@@ -213,10 +214,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string RemoveTrailingSpaces(this string source)
         {
-            if (string.IsNullOrEmpty(source))
-                return string.Empty;
-
-            return source.TrimStart().TrimEnd();
+            return source?.TrimStart().TrimEnd();
         }
 
         /// <summary>
