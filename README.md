@@ -19,10 +19,15 @@ Babou Extensions is just another extension method project using .NET Standard 2.
 
 ## **Install**
 
-View the NuGet at https://www.nuget.org/packages/BabouExtensions/
+For .NET Standard applications, view the NuGet package at https://www.nuget.org/packages/BabouExtensions/
 
 * **Package Manager:** Install-Package BabouExtensions
 * **.NET CLI:** dotnet add package BabouExtensions
+
+For .NET Core applications, view the NuGet package at https://www.nuget.org/packages/BabouExtensions.AspNetCore/
+
+* **Package Manager:** Install-Package BabouExtensions.AspNetCore
+* **.NET CLI:** dotnet add package BabouExtensions.AspNetCore
 
 ### **Subscribe**
 
@@ -34,11 +39,11 @@ View the NuGet at https://www.nuget.org/packages/BabouExtensions/
 
 #### Developed by AJ Tatum
 
-[![ajt.io](https://img.icons8.com/clouds/50/000000/domain.png "ajt.io")](https://ajt.io/)
-[![Facebook @ajtatum](https://img.icons8.com/clouds/50/000000/facebook-new.png "Facebook @ajtatum")](https://ajt.io/go/fb)
-[![Twitter @ajtatum](https://img.icons8.com/clouds/50/000000/twitter.png "Twitter @ajtatum")](https://ajt.io/go/twitter)
-[![LinkedIn @ajtatum](https://img.icons8.com/clouds/50/000000/linkedin.png "LinkedIn @ajtatum")](https://ajt.io/go/linkedin)
-[![Spotify @ajtatum17](https://img.icons8.com/clouds/50/000000/spotify.png "Spotify @ajtatum17")](https://ajt.io/go/spotify)
-[![GitHub @ajtatum](https://img.icons8.com/clouds/50/000000/github.png "GitHub @ajtatum")](https://ajt.io/go/github)
+[![ajt.io](https://img.icons8.com/clouds/50/000000/domain.png "ajt.io")](https://babou.io/aj)
+[![Facebook @ajtatum](https://img.icons8.com/clouds/50/000000/facebook-new.png "Facebook @ajtatum")](https://babou.io/fbaj)
+[![Twitter @ajtatum](https://img.icons8.com/clouds/50/000000/twitter.png "Twitter @ajtatum")](https://babou.io/twitteraj)
+[![LinkedIn @ajtatum](https://img.icons8.com/clouds/50/000000/linkedin.png "LinkedIn @ajtatum")](https://babou.io/linkedinaj)
+[![Spotify @ajtatum17](https://img.icons8.com/clouds/50/000000/spotify.png "Spotify @ajtatum17")](https://babou.io/spotifyaj)
+[![GitHub @ajtatum](https://img.icons8.com/clouds/50/000000/github.png "GitHub @ajtatum")](https://babou.io/githubaj)
 
 [Icons by Icons8](https://icons8.com/)
