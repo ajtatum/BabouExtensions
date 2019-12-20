@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,32 +51,13 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Gets the description of an enum value.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentException">If T is not an Enum</exception>
-        public static T GetEnumValueFromDescription<T>(this string source)
-        {
-            var type = typeof(T);
-            if (!type.IsEnum)
-                throw new ArgumentException();
-            var fields = type.GetFields();
-            var field = fields.SelectMany(f => f.GetCustomAttributes(typeof(DescriptionAttribute), false),
-                    (f, a) => new { Field = f, Att = a })
-                .SingleOrDefault(a => ((DescriptionAttribute)a.Att).Description == source);
-            return (T)field?.Field.GetRawConstantValue();
-        }
-
-        /// <summary>
         /// Truncates your string and optionally adds an ellipses suffix
         /// </summary>
         /// <param name="source">Original string</param>
         /// <param name="length">How long should the string be?</param>
         /// <param name="showSuffix">Do you want to show ellipses?</param>
         /// <returns></returns>
-        [Obsolete("Use WithMaxLength instead.")]
+        [Obsolete("This method is obsolete. Use WithMaxLength instead.")]
         public static string Truncate(this string source, int length, bool showSuffix)
         {
             var truncatedString = string.Empty;
@@ -534,11 +515,13 @@ namespace BabouExtensions
 
         /// <summary>
         /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.
+        /// Only works on Windows as it requires the Windows Cryptographic API.
         /// </summary>
         /// <param name="stringToEncrypt">String that must be encrypted.</param>
         /// <param name="key">Encryption Key.</param>
         /// <returns>A string representing a byte array separated by a minus sign.</returns>
         /// <exception cref="ArgumentException">Occurs when stringToEncrypt or key is null or empty.</exception>
+        [Obsolete("This method is obsolete as it relies on Windows. Use EncryptUsingAes instead.")]
         public static string Encrypt(this string stringToEncrypt, string key)
         {
             if (string.IsNullOrEmpty(stringToEncrypt))
@@ -568,11 +551,13 @@ namespace BabouExtensions
 
         /// <summary>
         /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
+        /// Only works on Windows as it requires the Windows Cryptographic API.
         /// </summary>
         /// <param name="stringToDecrypt">String that must be decrypted.</param>
         /// <param name="key">The Decryption Key.</param>
         /// <returns>The decrypted string or null if decryption failed.</returns>
         /// <exception cref="ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
+        [Obsolete("This method is obsolete as it relies on Windows. Use DecryptUsingAes instead.")]
         public static string Decrypt(this string stringToDecrypt, string key)
         {
             string result = null;
@@ -603,6 +588,94 @@ namespace BabouExtensions
             result = Encoding.UTF8.GetString(bytes);
 
             return result;
+        }
+
+        /// <summary>
+        /// Encrypts a string using AES Encryption.
+        /// </summary>
+        /// <param name="source">The string you wish to encrypt.</param>
+        /// <param name="key">The key used for encryption.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Occurs when source string or key is null or empty.</exception>
+        public static string EncryptUsingAes(this string source, string key)
+        {
+            if (source.IsNullOrEmpty())
+                throw new ArgumentException("The source must have valid value.", nameof(source));
+
+            if (key.IsNullOrEmpty())
+                throw new ArgumentException("Key must have valid value.", nameof(key));
+
+            var buffer = Encoding.UTF8.GetBytes(source);
+            var hash = new SHA512CryptoServiceProvider();
+            var aesKey = new byte[24];
+            Buffer.BlockCopy(hash.ComputeHash(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
+
+            using var aes = Aes.Create();
+            if (aes == null)
+                throw new ArgumentException("Parameter must not be null.", nameof(aes));
+
+            aes.Key = aesKey;
+
+            using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            using var resultStream = new MemoryStream();
+            using (var aesStream = new CryptoStream(resultStream, encryptor, CryptoStreamMode.Write))
+            {
+                using var plainStream = new MemoryStream(buffer);
+                plainStream.CopyTo(aesStream);
+            }
+
+            var result = resultStream.ToArray();
+            var combined = new byte[aes.IV.Length + result.Length];
+            Array.ConstrainedCopy(aes.IV, 0, combined, 0, aes.IV.Length);
+            Array.ConstrainedCopy(result, 0, combined, aes.IV.Length, result.Length);
+
+            return Convert.ToBase64String(combined);
+        }
+
+        /// <summary>
+        /// Decrypts a string using AES Encryption.
+        /// </summary>
+        /// <param name="source">The string you wish to decrypt.</param>
+        /// <param name="key">The key used for encryption.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Occurs when source string or key is null or empty.</exception>
+        public static string DecryptUsingAes(this string source, string key)
+        {
+            if (source.IsNullOrEmpty())
+                throw new ArgumentException("The source must have valid value.", nameof(source));
+
+            if (key.IsNullOrEmpty())
+                throw new ArgumentException("Key must have valid value.", nameof(key));
+
+            var combined = Convert.FromBase64String(source);
+            var buffer = new byte[combined.Length];
+            var hash = new SHA512CryptoServiceProvider();
+            var aesKey = new byte[24];
+            Buffer.BlockCopy(hash.ComputeHash(Encoding.UTF8.GetBytes(key)), 0, aesKey, 0, 24);
+
+            using var aes = Aes.Create();
+            if (aes == null)
+                throw new ArgumentException("Parameter must not be null.", nameof(aes));
+
+            aes.Key = aesKey;
+
+            var iv = new byte[aes.IV.Length];
+            var cypherText = new byte[buffer.Length - iv.Length];
+
+            Array.ConstrainedCopy(combined, 0, iv, 0, iv.Length);
+            Array.ConstrainedCopy(combined, iv.Length, cypherText, 0, cypherText.Length);
+
+            aes.IV = iv;
+
+            using var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            using var resultStream = new MemoryStream();
+            using (var aesStream = new CryptoStream(resultStream, decryptor, CryptoStreamMode.Write))
+            {
+                using var plainStream = new MemoryStream(cypherText);
+                plainStream.CopyTo(aesStream);
+            }
+
+            return Encoding.UTF8.GetString(resultStream.ToArray());
         }
 
         /// <summary>
