@@ -498,6 +498,7 @@ namespace BabouExtensions
         /// Determines if a string is a valid date. Returns dateTime as a date or null.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="dateTime"></param>
         /// <returns></returns>
         public static bool IsDate(this string source, out DateTime? dateTime)
         {
@@ -707,6 +708,7 @@ namespace BabouExtensions
         /// <param name="source"></param>
         /// <param name="format">The format of the date time string.</param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete. Please use TryTo method instead.")]
         public static string TryGetDate(this string source, string format = "yyyy-MM-dd")
         {
             return source.IsDate(out var releaseDateTime) ? releaseDateTime?.ToString(format) : null;
@@ -717,6 +719,7 @@ namespace BabouExtensions
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete. Please use TryTo method instead.")]
         public static double? TryGetDouble(this string source)
         {
             if (string.IsNullOrEmpty(source))
@@ -726,7 +729,6 @@ namespace BabouExtensions
                 return rating;
 
             return null;
-
         }
 
         /// <summary>
