@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou-100x100.png "Babou loves extension methods!") <!-- markdownlint-disable -->
+![alt text](https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou-150x150.png "Babou loves extension methods!") <!-- markdownlint-disable -->
 
 # **Babou Extensions**
 
