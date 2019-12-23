@@ -18,13 +18,14 @@
         <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou.png</PackageIconUrl>
         <PackageTags>extension-methods extensions extension dotnet babou</PackageTags>
-        <PackageReleaseNotes>Added a variety of new StringExtensions to convert or TryTo convert to different objects.</PackageReleaseNotes>
+        <PackageReleaseNotes>Fixed a bug in TryGetList and GetList where it wasn't removing empty values.</PackageReleaseNotes>
         <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <NeutralLanguage>en-US</NeutralLanguage>
         <LangVersion>default</LangVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <PackageIcon>Babou.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,6 +34,13 @@
 
     <ItemGroup>
         <PackageReference Update="NETStandard.Library" Version="2.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\assets\Babou.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>

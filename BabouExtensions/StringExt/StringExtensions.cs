@@ -419,7 +419,7 @@ namespace BabouExtensions
                 cleanString = cleanString.Replace("\t", charString);
             }
 
-            var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
+            var stringList = cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList();
             return stringList;
         }
 
@@ -443,7 +443,7 @@ namespace BabouExtensions
             var cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
             cleanString = cleanString.Replace("\t", charString);
 
-            var stringList = cleanString.Split(delimiter).Select(x => x.Trim()).Distinct().ToList();
+            var stringList = cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList();
             sourceList = stringList;
             return true;
         }
@@ -475,10 +475,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string HtmlDecode(this string source)
         {
-            if (string.IsNullOrEmpty(source))
-                return string.Empty;
-
-            return System.Net.WebUtility.HtmlDecode(source);
+            return string.IsNullOrEmpty(source) ? string.Empty : System.Net.WebUtility.HtmlDecode(source);
         }
 
         /// <summary>
@@ -488,10 +485,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static string HtmlEncode(this string source)
         {
-            if (string.IsNullOrEmpty(source))
-                return string.Empty;
-
-            return System.Net.WebUtility.HtmlEncode(source);
+            return string.IsNullOrEmpty(source) ? string.Empty : System.Net.WebUtility.HtmlEncode(source);
         }
 
         /// <summary>
@@ -518,22 +512,22 @@ namespace BabouExtensions
         /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.
         /// Only works on Windows as it requires the Windows Cryptographic API.
         /// </summary>
-        /// <param name="stringToEncrypt">String that must be encrypted.</param>
+        /// <param name="source">String that must be encrypted.</param>
         /// <param name="key">Encryption Key.</param>
+        /// <param name="useAes">If true, uses the new method of encryption.</param>
         /// <returns>A string representing a byte array separated by a minus sign.</returns>
-        /// <exception cref="ArgumentException">Occurs when stringToEncrypt or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows. Use EncryptUsingAes instead.")]
-        public static string Encrypt(this string stringToEncrypt, string key)
+        /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
+        [Obsolete("This method is obsolete as it relies on Windows. To keep the method name, set useAes to true or use EncryptUsingAes.")]
+        public static string Encrypt(this string source, string key, bool useAes = false)
         {
-            if (string.IsNullOrEmpty(stringToEncrypt))
-            {
-                throw new ArgumentException("An empty string value cannot be encrypted.");
-            }
+            if (useAes)
+                return EncryptUsingAes(source, key);
 
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException("Cannot encrypt using an empty key. Please supply an encryption key.");
-            }
+            if (source.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(source), "Source string cannot by empty or null.");
+
+            if (key.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(key), "Key cannot be empty or null.");
 
             var cspp = new CspParameters
             {
@@ -545,7 +539,7 @@ namespace BabouExtensions
                 PersistKeyInCsp = true
             };
 
-            var bytes = rsa.Encrypt(Encoding.UTF8.GetBytes(stringToEncrypt), true);
+            var bytes = rsa.Encrypt(Encoding.UTF8.GetBytes(source), true);
 
             return BitConverter.ToString(bytes);
         }
@@ -554,24 +548,24 @@ namespace BabouExtensions
         /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
         /// Only works on Windows as it requires the Windows Cryptographic API.
         /// </summary>
-        /// <param name="stringToDecrypt">String that must be decrypted.</param>
+        /// <param name="source">String that must be decrypted.</param>
         /// <param name="key">The Decryption Key.</param>
+        /// <param name="useAes">If true, uses the new method of decryption</param>
         /// <returns>The decrypted string or null if decryption failed.</returns>
-        /// <exception cref="ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows. Use DecryptUsingAes instead.")]
-        public static string Decrypt(this string stringToDecrypt, string key)
+        /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
+        [Obsolete("This method is obsolete as it relies on Windows. To keep the method name, set useAes to true or use DecryptUsingAes.")]
+        public static string Decrypt(this string source, string key, bool useAes = false)
         {
+            if (useAes)
+                return DecryptUsingAes(source, key);
+
             string result = null;
 
-            if (string.IsNullOrEmpty(stringToDecrypt))
-            {
-                throw new ArgumentException("An empty string value cannot be encrypted.");
-            }
+            if (source.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(source), "Source string cannot by empty or null.");
 
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException("Cannot decrypt using an empty key. Please supply a decryption key.");
-            }
+            if (key.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(key), "Key cannot be empty or null.");
 
             var cspp = new CspParameters
             {
@@ -581,7 +575,7 @@ namespace BabouExtensions
             var rsa = new RSACryptoServiceProvider(cspp);
             rsa.PersistKeyInCsp = true;
 
-            var decryptArray = stringToDecrypt.Split(new[] { "-" }, StringSplitOptions.None);
+            var decryptArray = source.Split(new[] { "-" }, StringSplitOptions.None);
             var decryptByteArray = Array.ConvertAll(decryptArray, (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
 
             var bytes = rsa.Decrypt(decryptByteArray, true);
@@ -597,14 +591,15 @@ namespace BabouExtensions
         /// <param name="source">The string you wish to encrypt.</param>
         /// <param name="key">The key used for encryption.</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException">Occurs when source string or key is null or empty.</exception>
+        /// <exception cref="ArgumentNullException">Occurs when source string or key is null or empty.</exception>
+        /// <exception cref="ArgumentException">Occurs when unable to create a AES key.</exception>
         public static string EncryptUsingAes(this string source, string key)
         {
             if (source.IsNullOrEmpty())
-                throw new ArgumentException("The source must have valid value.", nameof(source));
+                throw new ArgumentNullException(nameof(source),"Source string cannot by empty or null.");
 
             if (key.IsNullOrEmpty())
-                throw new ArgumentException("Key must have valid value.", nameof(key));
+                throw new ArgumentNullException(nameof(key), "Key cannot be empty or null.");
 
             var buffer = Encoding.UTF8.GetBytes(source);
             var hash = new SHA512CryptoServiceProvider();
@@ -640,6 +635,7 @@ namespace BabouExtensions
         /// <param name="key">The key used for encryption.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Occurs when source string or key is null or empty.</exception>
+        /// <exception cref="ArgumentException">Occurs when unable to create an AES key.</exception>
         public static string DecryptUsingAes(this string source, string key)
         {
             if (source.IsNullOrEmpty())
