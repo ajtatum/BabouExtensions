@@ -18,12 +18,12 @@ Babou Extensions is just another extension method project using .NET Standard 2.
 
 ## **Install**
 
-For .NET Standard applications, view the NuGet package at https://www.nuget.org/packages/BabouExtensions/
+For .NET Standard applications, view the [NuGet package](https://www.nuget.org/packages/BabouExtensions/).
 
 * **Package Manager:** Install-Package BabouExtensions
 * **.NET CLI:** dotnet add package BabouExtensions
 
-For .NET Core applications, view the NuGet package at https://www.nuget.org/packages/BabouExtensions.AspNetCore/
+For .NET Core applications check out [BabouExtensions.AspNetCore](https://github.com/ajtatum/BabouExtensions.AspNetCore) and view the [NuGet package](https://www.nuget.org/packages/BabouExtensions.AspNetCore/).
 
 * **Package Manager:** Install-Package BabouExtensions.AspNetCore
 * **.NET CLI:** dotnet add package BabouExtensions.AspNetCore
