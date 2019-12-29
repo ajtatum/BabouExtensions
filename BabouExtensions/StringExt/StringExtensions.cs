@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -387,39 +389,37 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Checks if source is a valid URL
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out var uri)
-                                                             && (uri.Scheme == Uri.UriSchemeHttp
-                                                                 || uri.Scheme == Uri.UriSchemeHttps
-                                                                 || uri.Scheme == Uri.UriSchemeFtp
-                                                                 || uri.Scheme == Uri.UriSchemeMailto);
-
-        /// <summary>
         /// Generates a list from a string based on the delimiter.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="delimiter"></param>
-        /// <param name="replaceLineBreaksAndTabs">Replaces line breaks and tabs with delimiter.</param>
+        /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
+        /// <param name="replaceLineBreaksWithString">
+        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="delimiter"></see>.</para>
+        /// <para>If provided a value, the line breaks will be separated by that value.</para>
+        /// </param>
+        /// <param name="onlyDistinctValues">Determines if you want to return only distinct values.</param>
         /// <returns></returns>
-        public static List<string> GetList(this string source, char delimiter = ',', bool replaceLineBreaksAndTabs = true)
+        public static List<string> GetList(this string source, char delimiter, bool replaceLineBreaksTabs = true, string replaceLineBreaksWithString = null, bool onlyDistinctValues = true)
         {
             if (string.IsNullOrEmpty(source))
                 return new List<string>();
 
-            var charString = delimiter.ToString();
-
             var cleanString = source;
 
-            if (replaceLineBreaksAndTabs)
+            if (replaceLineBreaksTabs)
             {
+                var charString = replaceLineBreaksWithString ?? delimiter.ToString();
+
                 cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
                 cleanString = cleanString.Replace("\t", charString);
             }
 
-            var stringList = cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList();
+            var stringList = onlyDistinctValues
+                ? cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList()
+                : cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToList();
+
             return stringList;
         }
 
@@ -429,8 +429,15 @@ namespace BabouExtensions
         /// <param name="source">Source string</param>
         /// <param name="delimiter">Character to split on</param>
         /// <param name="sourceList">If source is empty, returns an empty list</param>
+        /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
+        /// <param name="replaceLineBreaksWithString">
+        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="delimiter"></see>.</para>
+        /// <para>If provided a value, the line breaks will be separated by that value.</para>
+        /// </param>
+        /// <param name="onlyDistinctValues">Determines if you want to return only distinct values.</param>
         /// <returns>Either an empty list if source is empty or a list of strings.</returns>
-        public static bool TryGetList(this string source, char delimiter, out List<string> sourceList)
+        public static bool TryGetList(this string source, char delimiter, out List<string> sourceList, bool replaceLineBreaksTabs = true, string replaceLineBreaksWithString = null, bool onlyDistinctValues = true)
         {
             if (string.IsNullOrEmpty(source))
             {
@@ -438,14 +445,96 @@ namespace BabouExtensions
                 return false;
             }
 
-            var charString = delimiter.ToString();
+            var cleanString = source;
 
-            var cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
-            cleanString = cleanString.Replace("\t", charString);
+            if (replaceLineBreaksTabs)
+            {
+                var charString = replaceLineBreaksWithString ?? delimiter.ToString();
 
-            var stringList = cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList();
+                cleanString = Regex.Replace(source, @"\r\n?|\n", charString);
+                cleanString = cleanString.Replace("\t", charString);
+            }
+
+            var stringList = onlyDistinctValues
+                ? cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).Distinct().ToList()
+                : cleanString.Split(delimiter).Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToList();
+
             sourceList = stringList;
             return true;
+        }
+
+        /// <summary>
+        /// Converts a string to CSV.
+        /// </summary>
+        /// <param name="source">The string you wish to convert to a CSV value.</param>
+        /// <param name="splitOnDelimiter">The delimiter to split the string on.</param>
+        /// <param name="joinOnDelimiter">The delimiter to join the strings on.</param>
+        /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
+        /// <param name="replaceLineBreaksWithString">
+        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="splitOnDelimiter"></see>.</para>
+        /// <para>If provided a value, the line breaks will be separated by that value.</para>
+        /// </param>
+        /// <param name="surroundWithQuotes">
+        /// <para>If null, it will surround strings with quotes but not digits or true/false values.</para>
+        /// <para>If false, none of the values are surrounded with quotes.</para>
+        /// <para>If true, all the values will be surrounded with quotes.</para>
+        /// </param>
+        /// <param name="onlyDistinctValues">Decides whether or not you want to return all or just distinct values.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">There was an error trying to produce a list from the source string.</exception>
+        public static string ConvertToCsv(this string source, char splitOnDelimiter, char joinOnDelimiter, bool? surroundWithQuotes, bool replaceLineBreaksTabs = true, string replaceLineBreaksWithString = null, bool onlyDistinctValues = true)
+        {
+            if (source.TryGetList(splitOnDelimiter, out var cleanString, replaceLineBreaksTabs, replaceLineBreaksWithString, onlyDistinctValues))
+            {
+                var returnValue = string.Empty;
+
+                if (surroundWithQuotes.HasValue)
+                {
+                    if (surroundWithQuotes == false)
+                    {
+                        var charDelimiter = joinOnDelimiter.ToString();
+                        returnValue = string.Join(charDelimiter, cleanString);
+                    }
+                    else
+                    {
+                        cleanString.ForEach(x =>
+                        {
+                            returnValue += $"'{x}'{joinOnDelimiter}";
+                        });
+                    }
+                }
+                else
+                {
+                    cleanString.ForEach(x =>
+                    {
+                        if (x.IsDigitsOnly() || x == "true" || x == "false")
+                        {
+                            returnValue += $"{x}{joinOnDelimiter}";
+                        }
+                        else
+                        {
+                            returnValue += $"'{x}'{joinOnDelimiter}";
+                        }
+                    });
+                }
+
+                returnValue = returnValue.TrimEnd(joinOnDelimiter);
+
+                return returnValue;
+            }
+
+            throw new Exception("There was an error trying to produce a list from the source string.");
+        }
+
+        /// <summary>
+        /// Determines if the string is all digits
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsDigitsOnly(this string source)
+        {
+            return !source.IsNullOrWhiteSpace() && source.All(c => c >= '0' && c <= '9');
         }
 
         /// <summary>
@@ -496,7 +585,7 @@ namespace BabouExtensions
         /// <returns></returns>
         public static bool IsDate(this string source, out DateTime? dateTime)
         {
-            if (!string.IsNullOrEmpty(source) && System.DateTime.TryParse(source, out var realDateTime))
+            if (!string.IsNullOrEmpty(source) && DateTime.TryParse(source, out var realDateTime))
             {
                 dateTime = realDateTime;
                 return true;
@@ -676,25 +765,31 @@ namespace BabouExtensions
         }
 
         /// <summary>
-        /// Tries to get a URL from a string. Also uses IsValidUrl extension.
+        /// Checks if source is a valid URL
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsValidUrl(this string source) => Uri.TryCreate(source, UriKind.Absolute, out var uri)
+                                                             && (uri.Scheme == Uri.UriSchemeHttp
+                                                                 || uri.Scheme == Uri.UriSchemeHttps
+                                                                 || uri.Scheme == Uri.UriSchemeFtp
+                                                                 || uri.Scheme == Uri.UriSchemeMailto);
+
+        /// <summary>
+        /// Tries to get a URL from a string.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="url"></param>
         /// <returns></returns>
         public static bool TryGetUrl(this string source, out string url)
         {
-            const string urlRegex = @"(?:(?:https?):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
-
-            if (Regex.IsMatch(source, urlRegex, RegexOptions.IgnoreCase))
+            if (source.IsValidUrl())
             {
-                var tempUrl = Regex.Match(source, urlRegex, RegexOptions.IgnoreCase).Value;
-                if (tempUrl.IsValidUrl())
-                {
-                    url = tempUrl;
-                    return true;
-                }
+                url = source;
+                return true;
             }
-            url = string.Empty;
+
+            url = null;
             return false;
         }
 
@@ -707,7 +802,7 @@ namespace BabouExtensions
         [Obsolete("This method is obsolete. Please use TryTo method instead.")]
         public static string TryGetDate(this string source, string format = "yyyy-MM-dd")
         {
-            return source.IsDate(out var releaseDateTime) ? releaseDateTime?.ToString(format) : null;
+            return source.IsDate(out var returnValue) ? returnValue?.ToString(format) : null;
         }
 
         /// <summary>
@@ -721,8 +816,8 @@ namespace BabouExtensions
             if (string.IsNullOrEmpty(source))
                 return null;
 
-            if (double.TryParse(source, out var rating))
-                return rating;
+            if (double.TryParse(source, out var returnValue))
+                return returnValue;
 
             return null;
         }
