@@ -36,4 +36,11 @@
         <PackageReference Update="NETStandard.Library" Version="2.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="..\assets\Babou.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
 </Project>
