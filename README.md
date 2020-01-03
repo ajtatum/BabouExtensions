@@ -10,6 +10,7 @@ Babou Extensions is just another extension method project using .NET Standard 2.
 
 * DataTables, DataSets
 * DateTime
+* Enums
 * Identity
 * Linq
 * Lists, IEnumerable, and IQueryable
