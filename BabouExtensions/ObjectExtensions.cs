@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
-using System.Text;
+using System.Reflection;
 
 namespace BabouExtensions
 {
@@ -34,6 +34,23 @@ namespace BabouExtensions
             where T : struct, IFormattable
         {
             return source?.ToString(format, CultureInfo.CurrentCulture) ?? defaultValue;
+        }
+
+        /// <summary>
+        /// Gets the Description attribute of an object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string GetDescriptionAttr<T>(this T source)
+        {
+            FieldInfo fi = source.GetType().GetField(source.ToString());
+
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute), false);
+
+            if (attributes != null && attributes.Length > 0) return attributes[0].Description;
+            else return source.ToString();
         }
     }
 }

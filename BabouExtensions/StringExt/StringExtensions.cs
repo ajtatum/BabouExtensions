@@ -395,8 +395,8 @@ namespace BabouExtensions
         /// <param name="delimiter"></param>
         /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
         /// <param name="replaceLineBreaksWithString">
-        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
-        /// <para>If null, the line breaks will be replaced by the <see cref="delimiter"></see>.</para>
+        /// <para>This only matters if you have <see cref="T:replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="T:delimiter"></see>.</para>
         /// <para>If provided a value, the line breaks will be separated by that value.</para>
         /// </param>
         /// <param name="onlyDistinctValues">Determines if you want to return only distinct values.</param>
@@ -431,8 +431,8 @@ namespace BabouExtensions
         /// <param name="sourceList">If source is empty, returns an empty list</param>
         /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
         /// <param name="replaceLineBreaksWithString">
-        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
-        /// <para>If null, the line breaks will be replaced by the <see cref="delimiter"></see>.</para>
+        /// <para>This only matters if you have <see cref="T:replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="T:delimiter"></see>.</para>
         /// <para>If provided a value, the line breaks will be separated by that value.</para>
         /// </param>
         /// <param name="onlyDistinctValues">Determines if you want to return only distinct values.</param>
@@ -471,8 +471,8 @@ namespace BabouExtensions
         /// <param name="joinOnDelimiter">The delimiter to join the strings on.</param>
         /// <param name="replaceLineBreaksTabs">If true, line breaks and tabs will be split on based on the delimiter. If false, they'll remain.</param>
         /// <param name="replaceLineBreaksWithString">
-        /// <para>This only matters if you have <see cref="replaceLineBreaksTabs"></see> set to true.</para>
-        /// <para>If null, the line breaks will be replaced by the <see cref="splitOnDelimiter"></see>.</para>
+        /// <para>This only matters if you have <see cref="T:replaceLineBreaksTabs"></see> set to true.</para>
+        /// <para>If null, the line breaks will be replaced by the <see cref="T:splitOnDelimiter"></see>.</para>
         /// <para>If provided a value, the line breaks will be separated by that value.</para>
         /// </param>
         /// <param name="surroundWithQuotes">

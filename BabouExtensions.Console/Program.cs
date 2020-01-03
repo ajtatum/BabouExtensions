@@ -1,5 +1,4 @@
 ﻿using System;
-using BabouExtensions;
 
 namespace BabouExtensions.Console
 {
