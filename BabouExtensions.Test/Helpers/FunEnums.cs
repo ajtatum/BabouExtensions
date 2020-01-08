@@ -6,9 +6,9 @@ namespace BabouExtensions.Test.Helpers
 {
     public enum FunEnums
     {
-        [EnumMember(Value = "Here")]
-        [Description("Here")]
-        [Display(Name = "Here")]
+        [EnumMember(Value = "HereEnumMember")]
+        [Description("HereDescription")]
+        [Display(Name = "HereDisplay")]
         Here,
         Everywhere
     }

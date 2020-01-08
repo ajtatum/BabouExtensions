@@ -17,11 +17,14 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou.png</PackageIconUrl>
-        <PackageTags>extension-methods extensions extension dotnet babou</PackageTags>
-        <PackageReleaseNotes>- Corrected enum extension method GetEnumValueFromDescription.
-- Added enum extension methods GetAttributeOfType &amp; GetDisplayName
-- Added enum/object extension methods GetDescriptionAttr.
-- See Test project for examples on how to use new methods.</PackageReleaseNotes>
+        <PackageTags>extension-methods extensions extension helper-methods dotnet babou</PackageTags>
+        <PackageReleaseNotes>
+            - Added Enum Helper methods GetListByDescriptionAttr &amp; GetListByDisplayAttr.
+            - Corrected enum extension method GetEnumValueFromDescription.
+            - Added enum extension methods GetAttributeOfType &amp; GetDisplayName
+            - Added enum/object extension methods GetDescriptionAttr.
+            - See Test project for examples on how to use new methods.
+        </PackageReleaseNotes>
         <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <NeutralLanguage>en-US</NeutralLanguage>
@@ -42,6 +45,7 @@
 
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     </ItemGroup>
 
     <ItemGroup>

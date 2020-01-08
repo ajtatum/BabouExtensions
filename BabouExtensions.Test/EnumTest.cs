@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using BabouExtensions.Helpers;
 using BabouExtensions.Test.Helpers;
 using Xunit;
 
@@ -7,52 +9,72 @@ namespace BabouExtensions.Test
     public class EnumTest
     {
         [Fact]
-        public void EnumTest1()
+        public void GetEnumFromDescription_From_String()
         {
-            var here = "Here".GetEnumValueFromDescription<FunEnums>();
+            var here = "HereDescription".GetEnumValueFromDescription<FunEnums>();
             Assert.Equal(FunEnums.Here, here);
         }
 
         [Fact]
-        public void EnumTest2()
+        public void GetEnumFromDisplayName_From_String()
         {
-            var here = "Here".GetEnumFromDisplayName<FunEnums>();
+            var here = "HereDisplay".GetEnumFromDisplayName<FunEnums>();
             Assert.Equal(FunEnums.Here, here);
         }
         
         [Fact]
-        public void EnumTest3()
+        public void ParseEnum_From_String()
         {
             var here = "Here".ParseEnum(FunEnums.Here);
             Assert.Equal(FunEnums.Here, here);
         }
 
         [Fact]
-        public void EnumTest4()
+        public void GetAttrEnumMemberAttribute()
         {
             var here = FunEnums.Here.GetAttributeOfType<EnumMemberAttribute>().Value;
-            Assert.Equal("Here", here);
+            Assert.Equal("HereEnumMember", here);
         }
 
         [Fact]
-        public void EnumTest5()
+        public void GetDisplayName_With_Specified()
         {
             var here = FunEnums.Here.GetDisplayName();
-            Assert.Equal("Here", here);
+            Assert.Equal("HereDisplay", here);
         }
 
         [Fact]
-        public void EnumTest6()
+        public void GetDisplayName_Without_Specified()
         {
             var everywhere = FunEnums.Everywhere.GetDisplayName();
             Assert.Equal("Everywhere", everywhere);
         }
 
         [Fact]
-        public void EnumTest7()
+        public void GetDescriptionAttr()
         {
             var everywhere = FunEnums.Everywhere.GetDescriptionAttr();
             Assert.Equal("Everywhere", everywhere);
+        }
+
+        [Fact]
+        public void GetListByDescriptionAttr()
+        {
+            var funEnumList = Enum<FunEnums>.GetListByDescriptionAttr();
+
+            var funStringList = new List<string>() {"HereDescription", "Everywhere"};
+
+            Assert.Equal(funStringList, funEnumList);
+        }
+
+        [Fact]
+        public void GetListByDisplayAttr()
+        {
+            var funEnumList = Enum<FunEnums>.GetListByDisplayAttr();
+
+            var funStringList = new List<string>() { "HereDisplay", "Everywhere" };
+
+            Assert.Equal(funStringList, funEnumList);
         }
     }
 }
