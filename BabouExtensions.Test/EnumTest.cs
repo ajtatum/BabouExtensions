@@ -60,7 +60,7 @@ namespace BabouExtensions.Test
         [Fact]
         public void GetListByDescriptionAttr()
         {
-            var funEnumList = Enum<FunEnums>.GetListByDescriptionAttr();
+            var funEnumList = BabouEnum<FunEnums>.GetListByDescriptionAttr();
 
             var funStringList = new List<string>() {"HereDescription", "Everywhere"};
 
@@ -70,7 +70,7 @@ namespace BabouExtensions.Test
         [Fact]
         public void GetListByDisplayAttr()
         {
-            var funEnumList = Enum<FunEnums>.GetListByDisplayAttr();
+            var funEnumList = BabouEnum<FunEnums>.GetListByDisplayAttr();
 
             var funStringList = new List<string>() { "HereDisplay", "Everywhere" };
 

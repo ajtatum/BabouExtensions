@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BabouExtensions.Helpers
 {
-    public class Enum<T> where T : struct, IConvertible
+    public class BabouEnum<T> where T : struct, IConvertible
     {
         /// <summary>
         /// Returns a <see cref="List{T}"/> type string from an <see cref="Enum"/> based on the <see cref="DescriptionAttribute"/>.
