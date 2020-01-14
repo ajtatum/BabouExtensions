@@ -606,12 +606,9 @@ namespace BabouExtensions
         /// <param name="useAes">If true, uses the new method of encryption.</param>
         /// <returns>A string representing a byte array separated by a minus sign.</returns>
         /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows. To keep the method name, set useAes to true or use EncryptUsingAes.")]
-        public static string Encrypt(this string source, string key, bool useAes = false)
+        [Obsolete("This method is obsolete as it relies on Windows and will be unavailable by 2020-02-01. Use EncryptUsingAes.", true)]
+        public static string Encrypt(this string source, string key)
         {
-            if (useAes)
-                return EncryptUsingAes(source, key);
-
             if (source.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(source), "Source string cannot by empty or null.");
 
@@ -642,12 +639,9 @@ namespace BabouExtensions
         /// <param name="useAes">If true, uses the new method of decryption</param>
         /// <returns>The decrypted string or null if decryption failed.</returns>
         /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows. To keep the method name, set useAes to true or use DecryptUsingAes.")]
-        public static string Decrypt(this string source, string key, bool useAes = false)
+        [Obsolete("This method is obsolete as it relies on Windows and will be unavailable by 2020-02-01. Use DecryptUsingAes.")]
+        public static string Decrypt(this string source, string key)
         {
-            if (useAes)
-                return DecryptUsingAes(source, key);
-
             string result = null;
 
             if (source.IsNullOrEmpty())
@@ -829,5 +823,15 @@ namespace BabouExtensions
         /// <param name="json"></param>
         /// <returns></returns>
         public static T To<T>(this string json) => JsonConvert.DeserializeObject<T>(json);
+
+        /// <summary>
+        /// Simple helper that returns a null value if the string is empty or has whitespaces.
+        /// </summary>
+        /// <param name="source">The string you may want to nullify.</param>
+        /// <returns>This source string or null.</returns>
+        public static string ToNullIfWhiteSpace(this string source)
+        {
+            return source.IsNullOrWhiteSpace() ? null : source;
+        }
     }
 }
