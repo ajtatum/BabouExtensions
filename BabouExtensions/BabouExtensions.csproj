@@ -8,10 +8,10 @@
         <Product>Babou Extensions</Product>
         <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
         <Summary>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Summary>
-        <Authors>ajtatum</Authors>
-        <Owners>ajtatum</Owners>
-        <Copyright>ajtatum</Copyright>
-        <Company>https://ajt.io</Company>
+        <Authors>ajtatum, excelsiordev</Authors>
+        <Owners>ajtatum, excelsiordev</Owners>
+        <Copyright>Copyright © Excelsior Dev 2020</Copyright>
+        <Company>https://excelsiordev.co</Company>
         <PackageId>BabouExtensions</PackageId>
         <PackageLicenseExpression></PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -20,7 +20,7 @@
         <PackageTags>extension-methods extensions extension helper-methods dotnet babou</PackageTags>
         <PackageReleaseNotes>- WARNING: Current Encrypt/Decrypt methods will start throwing errors by 2020-02-01. Convert to EncryptUsingAes or DecryptUsingAes.
 - Added ToNullIfWhiteSpace in StringExtensions</PackageReleaseNotes>
-        <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
+        <RepositoryUrl>https://github.com/ExcelsiorDev/BabouExtensions</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <NeutralLanguage>en-US</NeutralLanguage>
         <LangVersion>default</LangVersion>

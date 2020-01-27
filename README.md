@@ -37,7 +37,7 @@ For .NET Core applications check out [BabouExtensions.AspNetCore](https://github
 
 **Be sure to checkout [BabouMail](https://github.com/ajtatum/BabouMail)**
 
-#### Developed by AJ Tatum
+#### Developed by AJ Tatum with [Excelsior Dev](https://excelsiordev.co)
 
 [![ajt.io](https://img.icons8.com/clouds/50/000000/domain.png "ajt.io")](https://s.babou.io/aj?src=https://github.com/ajtatum/BabouExtensions)
 [![Facebook @ajtatum](https://img.icons8.com/clouds/50/000000/facebook-new.png "Facebook @ajtatum")](https://s.babou.io/fbaj?src=https://github.com/ajtatum/BabouExtensions)

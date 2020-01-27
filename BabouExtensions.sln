@@ -16,12 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{13DE74
 		assets\Babou-150x150.png = assets\Babou-150x150.png
 		assets\Babou-250x250.png = assets\Babou-250x250.png
 		assets\Babou.png = assets\Babou.png
-		assets\Babou.psd = assets\Babou.psd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BabouExtensions.Console", "BabouExtensions.Console\BabouExtensions.Console.csproj", "{1A0CE016-F452-4E6E-88DF-B4AAE58A8190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabouExtensions.Test", "BabouExtensions.Test\BabouExtensions.Test.csproj", "{280A443C-25CB-40F7-8914-9160A0F46374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BabouExtensions.Test", "BabouExtensions.Test\BabouExtensions.Test.csproj", "{280A443C-25CB-40F7-8914-9160A0F46374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,11 +48,11 @@ Global
 		{13DE7455-5056-4A02-BE14-AB0A2F3C084D} = {5823AEAA-6038-4F46-A8CB-47AEA674866C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9844B846-BF12-4E75-ADBE-EC9193A91A60}
-		BuildVersion_AssemblyInfoFilename = BabouExtensions.Net\obj\Release\net462\BabouExtensions.Net.AssemblyInfo.cs
-		BuildVersion_ConfigurationName = Release
-		BuildVersion_StartDate = 2017/4/17
-		BuildVersion_UpdateFileVersion = True
 		BuildVersion_BuildVersioningStyle = YearStamp.MonthStamp.DayStamp.Increment
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_StartDate = 2017/4/17
+		BuildVersion_ConfigurationName = Release
+		BuildVersion_AssemblyInfoFilename = BabouExtensions.Net\obj\Release\net462\BabouExtensions.Net.AssemblyInfo.cs
+		SolutionGuid = {9844B846-BF12-4E75-ADBE-EC9193A91A60}
 	EndGlobalSection
 EndGlobal
