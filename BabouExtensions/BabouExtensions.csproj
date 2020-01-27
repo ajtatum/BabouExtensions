@@ -15,7 +15,7 @@
         <PackageId>BabouExtensions</PackageId>
         <PackageLicenseExpression></PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageProjectUrl>https://github.com/ajtatum/BabouExtensions</PackageProjectUrl>
+        <PackageProjectUrl>https://excelsiordev.co/portfolio-item/babouextensions/</PackageProjectUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou.png</PackageIconUrl>
         <PackageTags>extension-methods extensions extension helper-methods dotnet babou</PackageTags>
         <PackageReleaseNotes>- WARNING: Current Encrypt/Decrypt methods will start throwing errors by 2020-02-01. Convert to EncryptUsingAes or DecryptUsingAes.
