@@ -172,18 +172,22 @@ namespace BabouExtensions
         /// </summary>
         /// <param name="source"></param>
         /// <param name="additionalReplacements"></param>
+        /// <param name="replaceWith">What to replace tab, line breaks, etc with</param>
         /// <returns></returns>
-        public static string CleanString(this string source, string[] additionalReplacements = null)
+        public static string CleanString(this string source, string[] additionalReplacements = null, string replaceWith = "")
         {
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
 
-            source = Regex.Replace(source, @"\r\n?|\n|\t", string.Empty);
-            source = Regex.Replace(source, @"(<br \/?>|<br\/?>|<\/? br>|<\/?br>)", string.Empty);
-            source = Regex.Replace(source, @"(<p>)|(<\/p>)", string.Empty);
-            source = Regex.Replace(source, @"[ ]{2,}", string.Empty);
+            source = Regex.Replace(source, @"\r\n?|\n|\t", replaceWith);
+            source = Regex.Replace(source, @"(<br \/?>|<br\/?>|<\/? br>|<\/?br>)", replaceWith);
+            source = Regex.Replace(source, @"(<p>)|(<\/p>)", replaceWith);
+            source = Regex.Replace(source, @"[ ]{2,}", replaceWith);
             if (additionalReplacements != null)
-                source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, string.Empty));
+                source = additionalReplacements.Aggregate(source, (current, word) => current.Replace(word, replaceWith));
+
+            if(replaceWith == " ")
+                source = Regex.Replace(source, @"[ ]{2,}", replaceWith); //one final check for double spaces.
 
             source = source.Trim();
 
@@ -595,77 +599,6 @@ namespace BabouExtensions
                 dateTime = null;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Encrypts a string using the supplied key. Encoding is done using RSA encryption.
-        /// Only works on Windows as it requires the Windows Cryptographic API.
-        /// </summary>
-        /// <param name="source">String that must be encrypted.</param>
-        /// <param name="key">Encryption Key.</param>
-        /// <param name="useAes">If true, uses the new method of encryption.</param>
-        /// <returns>A string representing a byte array separated by a minus sign.</returns>
-        /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows and will be unavailable by 2020-02-01. Use EncryptUsingAes.", true)]
-        public static string Encrypt(this string source, string key)
-        {
-            if (source.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(source), "Source string cannot by empty or null.");
-
-            if (key.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(key), "Key cannot be empty or null.");
-
-            var cspp = new CspParameters
-            {
-                KeyContainerName = key
-            };
-
-            var rsa = new RSACryptoServiceProvider(cspp)
-            {
-                PersistKeyInCsp = true
-            };
-
-            var bytes = rsa.Encrypt(Encoding.UTF8.GetBytes(source), true);
-
-            return BitConverter.ToString(bytes);
-        }
-
-        /// <summary>
-        /// Decrypts a string using the supplied key. Decoding is done using RSA encryption.
-        /// Only works on Windows as it requires the Windows Cryptographic API.
-        /// </summary>
-        /// <param name="source">String that must be decrypted.</param>
-        /// <param name="key">The Decryption Key.</param>
-        /// <param name="useAes">If true, uses the new method of decryption</param>
-        /// <returns>The decrypted string or null if decryption failed.</returns>
-        /// <exception cref="ArgumentNullException">Occurs when source or key is null or empty.</exception>
-        [Obsolete("This method is obsolete as it relies on Windows and will be unavailable by 2020-02-01. Use DecryptUsingAes.")]
-        public static string Decrypt(this string source, string key)
-        {
-            string result = null;
-
-            if (source.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(source), "Source string cannot by empty or null.");
-
-            if (key.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(key), "Key cannot be empty or null.");
-
-            var cspp = new CspParameters
-            {
-                KeyContainerName = key
-            };
-
-            var rsa = new RSACryptoServiceProvider(cspp);
-            rsa.PersistKeyInCsp = true;
-
-            var decryptArray = source.Split(new[] { "-" }, StringSplitOptions.None);
-            var decryptByteArray = Array.ConvertAll(decryptArray, (s => Convert.ToByte(byte.Parse(s, NumberStyles.HexNumber))));
-
-            var bytes = rsa.Decrypt(decryptByteArray, true);
-
-            result = Encoding.UTF8.GetString(bytes);
-
-            return result;
         }
 
         /// <summary>
