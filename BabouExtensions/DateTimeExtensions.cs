@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeZoneConverter;
 
 namespace BabouExtensions
 {
@@ -97,5 +98,28 @@ namespace BabouExtensions
         /// <returns></returns>
         public static DateTime ToDateTimeFromUnix(this double unixTimeStamp)
             => _epoch.AddSeconds(unixTimeStamp).ToLocalTime();
+
+        /// <summary>
+        /// Converts DateTime.UtcNow to the current time for a specified TimeZone. Relies on package TimeZoneConverter to try and handle time zone name differences between Windows and Linux.
+        /// </summary>
+        /// <param name="value">The DateTime you wish to convert</param>
+        /// <param name="timeZone">The TimeZone you wish to convert to.</param>
+        /// <returns>Will try to convert to the timeZone specified. If an exception occurs, returns the DateTime originally specified.</returns>
+        public static DateTime TryGetTimeZoneDateTime(this DateTime value, string timeZone)
+        {
+            if(string.IsNullOrWhiteSpace(timeZone))
+                throw new ArgumentNullException(nameof(timeZone));
+
+            try
+            {
+                var timeUtc = value.ToUniversalTime();
+                var timeZoneInfo = TZConvert.GetTimeZoneInfo(timeZone);
+                return TimeZoneInfo.ConvertTimeFromUtc(timeUtc, timeZoneInfo);
+            }
+            catch (Exception)
+            {
+                return value;
+            }
+        }
     }
 }

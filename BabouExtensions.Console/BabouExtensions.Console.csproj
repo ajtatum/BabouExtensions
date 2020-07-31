@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="BabouExtensions">
-      <HintPath>..\BabouExtensions\bin\Debug\netstandard2.0\BabouExtensions.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\BabouExtensions\BabouExtensions.csproj" />
   </ItemGroup>
 
 </Project>

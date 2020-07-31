@@ -18,7 +18,7 @@
         <PackageProjectUrl>https://excelsiordev.co/portfolio-item/babouextensions/</PackageProjectUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou.png</PackageIconUrl>
         <PackageTags>extension-methods extensions extension helper-methods dotnet babou</PackageTags>
-        <PackageReleaseNotes>- Removed old encryption methods. Updated CleanString to have optional replaceWith.</PackageReleaseNotes>
+        <PackageReleaseNotes>- Added TryGetTimeZoneDateTime as an extension method to convert current time to a timezone. Relies on https://github.com/mj1856/TimeZoneConverter to help avoid exceptions between operating systems.</PackageReleaseNotes>
         <RepositoryUrl>https://github.com/ExcelsiorDev/BabouExtensions</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <NeutralLanguage>en-US</NeutralLanguage>
@@ -40,6 +40,7 @@
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+        <PackageReference Include="TimeZoneConverter" Version="3.2.0" />
     </ItemGroup>
 
     <ItemGroup>
