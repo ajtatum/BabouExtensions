@@ -60,5 +60,67 @@ namespace BabouExtensions
         /// <returns></returns>
         public static T RandomElement<T>(this IList<T> enumerable)
             => enumerable.ElementAt(_random.Next(0, enumerable.Count));
+
+        /// <summary>
+        /// Returns a string separated by commas and a word/character as defined in the parameter
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <param name="finalWord">For example and, or, and the ampersand sign</param>
+        /// <returns></returns>
+        public static string CommasWithWord(this IEnumerable<string> collection, string finalWord)
+        {
+            var output = string.Empty;
+
+            if (collection == null) 
+                return string.Empty;
+
+            var list = collection.ToList();
+
+            if (!list.Any()) 
+                return output;
+
+            if (list.Count == 1) 
+                return list.First();
+
+            if (list.Count == 2)
+                return string.Join($" {finalWord} ", list);
+
+            var delimited = string.Join(", ", list.Take(list.Count - 1));
+
+            output = string.Concat(delimited, $", {finalWord} ", list.LastOrDefault());
+
+            return output;
+        }
+
+        /// <summary>
+        /// Returns a string separated by commas and a word/character as defined in the parameter
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <param name="finalWord">For example and, or, and the ampersand sign</param>
+        /// <returns></returns>
+        public static string CommasWithWord(this IEnumerable<int> collection, string finalWord)
+        {
+            var output = string.Empty;
+
+            if (collection == null) 
+                return string.Empty;
+
+            var list = collection.ToList();
+
+            if (!list.Any()) 
+                return output;
+
+            if (list.Count == 1) 
+                return Convert.ToString(list.First());
+
+            if (list.Count == 2)
+                return string.Join($" {finalWord} ", list);
+
+            var delimited = string.Join(", ", list.Take(list.Count - 1));
+
+            output = string.Concat(delimited, $", {finalWord} ", list.LastOrDefault());
+
+            return output;
+        }
     }
 }
