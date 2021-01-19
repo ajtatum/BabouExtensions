@@ -12,9 +12,10 @@ namespace BabouExtensions
     {
         private static class ThreadSafeRandom
         {
-            [ThreadStatic] private static Random Local;
+            [ThreadStatic] 
+            private static Random _local;
 
-            public static Random ThisThreadsRandom => Local ??= new Random(unchecked(Environment.TickCount * 31 + Thread
+            public static Random ThisThreadsRandom => _local ??= new Random(unchecked(Environment.TickCount * 31 + Thread
                                                                                          .CurrentThread.ManagedThreadId));
         }
 
@@ -59,6 +60,15 @@ namespace BabouExtensions
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T RandomElement<T>(this IList<T> enumerable)
+            => enumerable.ElementAt(_random.Next(0, enumerable.Count));
+
+        /// <summary>
+        /// Grabs a random element from an Enumerable
+        /// </summary>
+        /// <param name="enumerable"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T RandomElement<T>(this ICollection<T> enumerable)
             => enumerable.ElementAt(_random.Next(0, enumerable.Count));
 
         /// <summary>
