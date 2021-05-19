@@ -29,10 +29,6 @@ For .NET Core applications check out [BabouExtensions.AspNetCore](https://github
 * **Package Manager:** Install-Package BabouExtensions.AspNetCore
 * **.NET CLI:** dotnet add package BabouExtensions.AspNetCore
 
-### **Subscribe**
-
-[Subscribe to Updates via PushBullet](https://www.pushbullet.com/channel?tag=babouextensions)
-
 ---
 
 **Be sure to checkout [BabouMail](https://github.com/ajtatum/BabouMail)**
