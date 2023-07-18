@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Version>1.2.4</Version>
+        <PackageVersion>1.2.4</PackageVersion>
+        <Title>Babou Extensions</Title>
+        <Product>Babou Extensions</Product>
+        <Description>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Description>
+        <Summary>Another Extension Methods package, but named after Babou and built in Fort Kickass from the tv show Archer.</Summary>
+        <Authors>ajtatum, AJ Tatum Digital</Authors>
+        <Owners>ajtatum, AJTatumDigital</Owners>
+        <Copyright>Copyright © AJ Tatum Digital 2023</Copyright>
+        <Company>https://ajtatumdigital.com/</Company>
+        <PackageId>BabouExtensions</PackageId>
+        <PackageLicenseExpression></PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://ajtatumdigital.com/</PackageProjectUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/ajtatum/BabouExtensions/master/assets/Babou.png</PackageIconUrl>
+        <PackageTags>extension-methods extensions extension helper-methods dotnet babou</PackageTags>
+        <PackageReleaseNotes>Added Enum extension to get the value assigned to an enum.</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/ajtatum/BabouExtensions</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <LangVersion>default</LangVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <PackageIcon>Babou.png</PackageIcon>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+        <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Update="NETStandard.Library" Version="2.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\assets\Babou.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+      <None Include="..\LICENSE.md">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
+</Project>
